@@ -15,9 +15,9 @@ import MenuIcon from "@mui/icons-material/Menu";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
-
+import {navItems} from "../navItems"
+import { cols } from "../colorSchema";
 const drawerWidth = 240;
-const navItems = ["Home", "Projects", "About", "Blog"];
 
 function Navbar(props) {
   const { window } = props;
@@ -28,17 +28,19 @@ function Navbar(props) {
   };
 
   const drawer = (
-    <Box onClick={handleDrawerToggle} sx={{ textAlign: "center" }}>
+    <Box onClick={handleDrawerToggle} sx={{ textAlign: "center"}}>
       <Typography variant="h6" sx={{ my: 2 }}>
         Fred Egidi
       </Typography>
       <Divider />
       <List>
         {navItems.map((item) => (
-          <ListItem key={item} disablePadding>
-            <ListItemButton sx={{ textAlign: "center" }}>
-              <ListItemText primary={item} />
-            </ListItemButton>
+          <ListItem key={item.id} disablePadding>
+             <Link href={item.linkTo} underline="hover">
+                <Button key={item.id} sx={{ color: "#f1f1f1" }}>
+                  {item.name}
+                </Button>
+              </Link>
           </ListItem>
         ))}
       </List>
@@ -49,10 +51,10 @@ function Navbar(props) {
     window !== undefined ? () => window().document.body : undefined;
 
   return (
-    <Box sx={{ display: "flex" }}>
+    <Box sx={{ display: "flex"}}>
       <CssBaseline />
       <AppBar component="nav">
-        <Toolbar>
+        <Toolbar sx={{backgroundColor: cols.main}}>
           <IconButton
             color="inherit"
             aria-label="open drawer"
@@ -71,9 +73,9 @@ function Navbar(props) {
           </Typography>
           <Box sx={{ display: { xs: "none", sm: "block" } }}>
             {navItems.map((item) => (
-              <Link href={item} underline="hover">
-                <Button key={item} sx={{ color: "#f1f1f1" }}>
-                  {item}
+              <Link key={item.id}  href={item.linkTo} underline="hover">
+                <Button sx={{ color: "#f1f1f1" }}>
+                  {item.name}
                 </Button>
               </Link>
             ))}
