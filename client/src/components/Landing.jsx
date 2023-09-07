@@ -5,7 +5,7 @@ import Typewriter from "typewriter-effect";
 // import sourceImage from "../src/assets/sonia-nadales-NCPlsNHBXqA-unsplash.jpeg";
 // import sourceImage from "../assets/molnar-random.png";
 // import sourceImage from "../assets/zeichnung.svg";
-import sourceImage from "../assets/zeichnung.svg";
+import sourceImage from "../assets/saved-artwork.svg";
 import "./Landing-styles.css";
 
 export default function Landing() {
