@@ -40,7 +40,7 @@ function randomStrokes(ctx, numPoints, gridSize, pointSize, col, numStrokes) {
 }
 
 function Artwork() {
-  const [shouldRedraw, setShouldRedraw] = useState(false);
+  const [shouldRedraw, setShouldRedraw] = useState(true);
   const gridSize = 4;
   const numStrokes = 4;
 
