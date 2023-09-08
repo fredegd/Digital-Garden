@@ -162,7 +162,7 @@ export default function Landing() {
   return (
     <div className="big-container">
       <div className="intro">
-        <h1 style={textStyle}>Hi, I'm Fred Egidi</h1>
+        <h1 style={textStyle}>Fred Egidi</h1>
         <h2 style={textStyle}>
           <Typewriter
             options={{
@@ -187,7 +187,7 @@ export default function Landing() {
                 // .callFunction(() => {
                 //   console.log("All strings were deleted");
                 // })
-                .start();
+                //.start();
             }}
           />
         </h2>

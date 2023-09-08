@@ -1,139 +1,172 @@
-import React, { useEffect, useState, useRef } from 'react';
-
-function randomStrokes(ctx, numPoints, gridSize, pointSize, col, numStrokes) {
-  const pointCoords = Array.from({ length: numPoints }, (_, index) => ({
-    x: (index % gridSize) * pointSize + pointSize / 2,
-    y: Math.floor(index / gridSize) * pointSize + pointSize / 2,
-  }));
-
-  let startIndex = Math.floor(Math.random() * (gridSize * gridSize));
-  let currentIndex = startIndex;
-  const visitedPoints = new Set(); // Track visited points
-
-  for (let i = 0; i < numStrokes; i++) {
-    const fil = col; // Use the provided color directly
-
-    const startX = pointCoords[currentIndex].x;
-    const startY = pointCoords[currentIndex].y;
-
-    visitedPoints.add(currentIndex); // Mark the current point as visited
-
-    // Find the next unvisited point
-    let nextIndex;
-    do {
-      nextIndex = (currentIndex + Math.floor(Math.random() * (numPoints - 2)) + 1) % numPoints;
-    } while (visitedPoints.has(nextIndex));
-
-    const endX = pointCoords[nextIndex].x;
-    const endY = pointCoords[nextIndex].y;
-
-    ctx.lineWidth = Math.random() * 20 + 20; // Random stroke weight
-    ctx.strokeStyle = fil;
-    ctx.beginPath();
-    ctx.moveTo(startX, startY);
-    ctx.lineTo(endX, endY);
-    ctx.stroke();
-    ctx.lineCap = 'round';
-
-    currentIndex = nextIndex;
-  }
-}
-
+import React, { useEffect, useRef, useState } from "react";
+import p5 from "p5";
 function Artwork() {
-  const [shouldRedraw, setShouldRedraw] = useState(true);
-  const gridSize = 4;
-  const numStrokes = 4;
-
-  const numPoints = gridSize ** 2;
-
   const canvasRef = useRef(null);
+  const p5CanvasRef = useRef(null); // Declare p5CanvasRef here
+  const [displayCanvas, setDisplayCanvas] = useState(false); // Track canvas display
+  const [svgString, setSvgString] = useState(""); // Store SVG content
 
-
+  
   useEffect(() => {
-    const canvas = document.getElementById('artCanvas');
-    const ctx = canvas.getContext('2d');
-    function handleKeyPress(event) {
-      if (event.key === 'r' || event.key === 'R') {
-        setShouldRedraw(true);
-      }
-    }
+    const sketch = (p) => {
+      const svgWidth = 400;
+      const svgHeight = 400;
+      
+      p.setup = () => {
+        p.createCanvas(svgWidth, svgHeight).parent(canvasRef.current);
+        p.noLoop();
+        drawArtwork(p);
+      };
 
-    window.addEventListener('keydown', handleKeyPress);
+      const getRandomHexColors = () => {
+        const hexChars = "0123456789abcdef";
+      
+        const getRandomHexColor = () => {
+          let color = "#";
+          for (let i = 0; i < 6; i++) {
+            const randomIndex = Math.floor(Math.random() * hexChars.length);
+            color += hexChars[randomIndex];
+          }
+          return color;
+        };
+      
+        let color1, color2;
+      
+        do {
+          color1 = getRandomHexColor();
+          color2 = getRandomHexColor();
+        } while (color1 === color2); // Ensure color2 is different from color1
+      
+        return [color1, color2];
+      };
+      
+
+      const drawArtwork = (p) => {
+        let svgString = ""; // Initialize an empty SVG string
+
+        displayCanvas && {
+
+        }
+        
+        svgString += `<svg xmlns="http://www.w3.org/2000/svg" width="${svgWidth}" height="${svgHeight}">`;
+        p.clear();
+        // Your drawing code here, but use SVG primitives like line
+        const gridSize = 4;
+        const numStrokes = 7;
+        const numPoints = gridSize ** 2;
+        const pointSize = p.width / gridSize;
+
+        for (let i = 0; i < 2; i++) {
+          const [color1, color2] = getRandomHexColors();
+           const col = i % 2 === 0 ? color1 : color2; // Alternating colors
+
+          let startIndex = Math.floor(p.random(numPoints));
+          let currentIndex = startIndex;
+          const visitedPoints = new Set();
+
+          for (let j = 0; j < numStrokes; j++) {
+            const startX =
+              (currentIndex % gridSize) * pointSize + pointSize / 2;
+            const startY =
+              Math.floor(currentIndex / gridSize) * pointSize + pointSize / 2;
+
+            visitedPoints.add(currentIndex);
+
+            let nextIndex;
+            do {
+              nextIndex =
+                (currentIndex + Math.floor(p.random(numPoints - 2)) + 1) %
+                numPoints;
+            } while (visitedPoints.has(nextIndex));
+
+            const endX = (nextIndex % gridSize) * pointSize + pointSize / 2;
+            const endY =
+              Math.floor(nextIndex / gridSize) * pointSize + pointSize / 2;
+            let sw = p.random(5) + 5;
+            p.stroke(col);
+            p.strokeWeight(sw);
+            p.strokeCap(p.ROUND); // Set stroke cap to round
+
+            p.line(startX, startY, endX, endY);
+
+            currentIndex = nextIndex;
+
+            // Create SVG lines based on the p5.js lines
+            svgString += `<line x1="${startX}" y1="${startY}" x2="${endX}" y2="${endY}" stroke="${col}" stroke-width="${sw}" stroke-linecap="round"/>`;
+          }
+        }
+        svgString += "</svg>";
+        console.log(svgString);
+        // Send SVG data to the server or save it as a file
+        saveSVGOnServer(svgString);
+      };
+
+      const exportCanvasAsSVG = () => {
+        // Call drawArtwork to render lines on the canvas
+        drawArtwork(p);
+
+        // Create an SVG element for saving or displaying
+        const svg = document.createElementNS(
+          "http://www.w3.org/2000/svg",
+          "svg"
+        );
+        svg.setAttribute("width", p.width);
+        svg.setAttribute("height", p.height);
+
+        // Clone the canvas element and append it to the SVG
+        const canvasClone = canvasRef.current.children[0].cloneNode(true);
+        svg.appendChild(canvasClone);
+
+        // // Serialize the SVG to a string
+        // const serializer = new XMLSerializer();
+        // const svgString = serializer.serializeToString(svg);
+      };
+
+      p.exportSVG = exportCanvasAsSVG;
+    };
+
+    const p5Canvas = new p5(sketch, canvasRef.current);
+    p5CanvasRef.current = p5Canvas;
 
     return () => {
-      window.removeEventListener('keydown', handleKeyPress);
+      p5Canvas.remove();
     };
   }, []);
 
-  useEffect(() => {
-    if (shouldRedraw) {
-      const canvas = document.getElementById('artCanvas');
-      const ctx = canvas.getContext('2d');
-
-      const pointSize = canvas.width / gridSize;
-      // Clear and redraw the canvas
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-      randomStrokes(ctx, numPoints, gridSize, pointSize, '#00ff00', numStrokes); // Green
-      randomStrokes(ctx, numPoints, gridSize, pointSize, '#aff000', numStrokes); // Yellow-green
-
-      // Reset shouldRedraw
-      setShouldRedraw(false);
-
-       // Generate SVG data from canvas content
-    const svgData = getSVGFromCanvas(canvas); // Call getSVGFromCanvas here
-
-    // Send SVG data to the server to save it
-    saveSVGOnServer(svgData); // Call saveSVGOnServer here
-    }
-  }, [shouldRedraw]);
-
- 
-  const getSVGFromCanvas = (canvas) => {
-    const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
-    svg.setAttribute('width', canvas.width);
-    svg.setAttribute('height', canvas.height);
-
-    // Copy canvas content to SVG
-    const image = new Image();
-    image.src = canvas.toDataURL();
-
-    const svgImage = document.createElementNS('http://www.w3.org/2000/svg', 'image');
-    svgImage.setAttribute('width', canvas.width);
-    svgImage.setAttribute('height', canvas.height);
-    svgImage.setAttribute('x', '0');
-    svgImage.setAttribute('y', '0');
-    svgImage.setAttributeNS('http://www.w3.org/1999/xlink', 'xlink:href', image.src);
-    svg.appendChild(svgImage);
-
-    return new XMLSerializer().serializeToString(svg);
-  };
-
   const saveSVGOnServer = (svgData) => {
-    fetch('http://localhost:3001/save-svg', {
-      method: 'POST',
+    console.log(svgData);
+    fetch("http://localhost:3001/save-svg", {
+      method: "POST",
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
       },
       body: JSON.stringify({ svgData }),
     })
       .then((response) => {
-        console.log('Response from server:', response);
+        console.log("Response from server:", response);
         if (response.status === 200) {
-          console.log('SVG saved successfully on the server.');
+          console.log("SVG saved successfully on the server.");
         } else {
-          console.error('Failed to save SVG on the server.');
+          console.error("Failed to save SVG on the server.");
         }
       })
       .catch((error) => {
-        console.error('Error while saving SVG:', error);
+        console.error("Error while saving SVG:", error);
       });
+  };
+
+  const handleExportSVG = () => {
+    if (p5CanvasRef.current) {
+      p5CanvasRef.current.exportSVG();
+    }
   };
 
   return (
     <div>
-      <canvas ref={canvasRef} id="artCanvas" width={800} height={800}></canvas>
-      <button onClick={() => setShouldRedraw(true)}>Redraw and Save as SVG</button>
+      <div ref={canvasRef}></div>
+      <img src="../assets/saved-artwork.svg" alt="Saved Artwork" />
+
+      <button onClick={handleExportSVG}>Redraw and Save as SVG</button>
     </div>
   );
 }

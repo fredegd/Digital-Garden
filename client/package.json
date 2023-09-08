@@ -17,6 +17,8 @@
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-router-dom": "^6.15.0",
+    "react-simple-typewriter": "^5.0.1",
+    "svg.js": "^2.7.1",
     "typewriter-effect": "^2.20.1"
   },
   "devDependencies": {
