@@ -1,11 +1,10 @@
 import React from 'react'
-import Artwork from './Artwork'
 
 export default function Projects() {
   return (
     <div>
 <h1>Projects</h1>
-<Artwork />
+{/* <Artwork /> */}
     </div>
   )
 }

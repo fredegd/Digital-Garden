@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import p5 from "p5";
-function Artwork() {
+import axios from "axios";
+function Artwork({bgImage, setBgImage}) {
   const canvasRef = useRef(null);
   const p5CanvasRef = useRef(null); // Declare p5CanvasRef here
   const [displayCanvas, setDisplayCanvas] = useState(false); // Track canvas display
@@ -96,7 +97,8 @@ function Artwork() {
           }
         }
         svgString += "</svg>";
-        console.log(svgString);
+        // console.log(svgString);
+
         // Send SVG data to the server or save it as a file
         saveSVGOnServer(svgString);
       };
@@ -133,8 +135,21 @@ function Artwork() {
     };
   }, []);
 
+  const fetchSvg = async () => {
+    try {
+      const response = await axios.get("./src/assets/saved-artwork.svg");
+      console.log(response.data)
+      console.log(bgImage);
+      // setBgImage(response.data);
+    } catch (error) {
+      console.error("Error while fetching SVG:", error);
+    }
+  };
+
   const saveSVGOnServer = (svgData) => {
-    console.log(svgData);
+     // Fetch the saved-artwork.svg file using Axios and set it as the bgImage state variable
+    
+    // console.log(svgData);
     fetch("http://localhost:3001/save-svg", {
       method: "POST",
       headers: {
@@ -149,10 +164,17 @@ function Artwork() {
         } else {
           console.error("Failed to save SVG on the server.");
         }
+        fetchSvg()
       })
+      
       .catch((error) => {
         console.error("Error while saving SVG:", error);
       });
+
+
+    
+       
+    
   };
 
   const handleExportSVG = () => {
@@ -163,10 +185,9 @@ function Artwork() {
 
   return (
     <div>
-      <div ref={canvasRef}></div>
-      <img src="../assets/saved-artwork.svg" alt="Saved Artwork" />
+      <div ref={canvasRef} onClick={handleExportSVG} ></div>
+      <img src={bgImage} alt="Saved Artwork" />
 
-      <button onClick={handleExportSVG}>Redraw and Save as SVG</button>
     </div>
   );
 }
