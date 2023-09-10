@@ -161,7 +161,7 @@ export default function Landing() {
   }
 
   const textStyle = {
-    zIndex: "1000",
+    zIndex: "100",
     color: "#000",
     // backgroundColor: "#f1f1f1",
     // mixBlendMode: "difference",
@@ -179,9 +179,7 @@ export default function Landing() {
 
   return (
     <div className="big-container">
-      <div style={textStyle}>
-        <DrawerBGChange bgImage={bgImage} setBgImage={setBgImage} />{" "}
-      </div>
+     
 
       <div className="intro">
         <h1 style={textStyle}>Fred Egidi</h1>
@@ -214,7 +212,9 @@ export default function Landing() {
           />
         </h2>
       </div>
-
+      <div style={textStyle}>
+        <DrawerBGChange bgImage={bgImage} setBgImage={setBgImage} />{" "}
+      </div>
       <div className="container" id="container"></div>
     </div>
   );

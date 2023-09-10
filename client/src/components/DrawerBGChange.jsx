@@ -29,7 +29,7 @@ export default function DrawerBGChange({ bgImage, setBgImage }) {
 
   return (
     <div>
-      <Button onClick={toggleDrawer(true)}>change background</Button>
+      <Button onClick={toggleDrawer(true)} sx={{position:"absolute",top:"4rem", right:"0"}}>change background</Button>
       <Drawer
         anchor={"right"}
         open={state}
@@ -41,6 +41,7 @@ export default function DrawerBGChange({ bgImage, setBgImage }) {
             width: 450,
             zIndex: 1000,
             marginTop: "4rem",
+            zIndex: 1000,   
           }}
           role="presentation"
           // onClick={toggleDrawer(false)}
