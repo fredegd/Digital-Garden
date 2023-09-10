@@ -1,64 +1,57 @@
 import * as React from "react";
+import { useState, useEffect } from "react";
 import Box from "@mui/material/Box";
 import Drawer from "@mui/material/Drawer";
-import SwipeableDrawer from '@mui/material/SwipeableDrawer';
+import SwipeableDrawer from "@mui/material/SwipeableDrawer";
 
 import Button from "@mui/material/Button";
 import Artwork from "./Artwork";
 
-export default function DrawerBGChange({bgImage, setBgImage}) {
-  const [state, setState] = React.useState({
-    top: false,
-    left: false,
-    bottom: false,
-    right: false,
-  });
+export default function DrawerBGChange({ bgImage, setBgImage }) {
+  const [state, setState] = useState(false);
 
-  const toggleDrawer = (anchor, open) => (event) => {
-    if (
-      event.type === "keydown" &&
-      (event.key === "Tab" || event.key === "Shift")
-    ) {
-      return;
+  const toggleDrawer = (open) => (event) => {
+    if (event.type === "keydown") {
+      if (event.key === "Tab" || event.key === "Shift") {
+        return;
+      } else if (event.key === "Escape") {
+        console.log("esc pressed");
+        setState(false);
+      }
     }
 
-    setState({ ...state, [anchor]: open });
+    setState(open);
   };
 
-  const list = (anchor) => (
-    <Box
-      sx={{
-        width: anchor === "top" || anchor === "bottom" ? "auto" : 450,
-        zIndex: 1000,
-      }}
-      role="presentation"
-      onClick={toggleDrawer(anchor, false)}
-      onKeyDown={toggleDrawer(anchor, false)}
-    >
-      <Artwork bgImage={bgImage} setBgImage={setBgImage} />
-    </Box>
-  );
+  const closeDrawer = () => {
+    setState(false);
+  };
 
   return (
     <div>
-      {["right"].map((anchor) => (
-        <React.Fragment key={anchor}>
-          <Button onClick={toggleDrawer(anchor, true)}>
-            change background
+      <Button onClick={toggleDrawer(true)}>change background</Button>
+      <Drawer
+        anchor={"right"}
+        open={state}
+        onClose={toggleDrawer(false)}
+         variant="persistent"
+      >
+        <Box
+          sx={{
+            width: 450,
+            zIndex: 1000,
+            marginTop: "4rem",
+          }}
+          role="presentation"
+          // onClick={toggleDrawer(false)}
+         // onKeyDown={toggleDrawer(false)}
+        >
+             <Button onClick={closeDrawer} style={{ float: "right", margin: "8px" }}>
+            Close
           </Button>
-          <Drawer
-            anchor={"right"}
-            open={state[anchor]}
-            onClose={toggleDrawer(anchor, false)}
-            variant="persistent"
-            onOpen={toggleDrawer(anchor, true)}
-
-          >
-
-            {list(anchor)}
-          </Drawer>
-        </React.Fragment>
-      ))}
+          <Artwork bgImage={bgImage} setBgImage={setBgImage} />
+        </Box>
+      </Drawer>
     </div>
   );
 }
