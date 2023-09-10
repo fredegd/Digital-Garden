@@ -1,5 +1,6 @@
 
 
+![App Screenshot](./src/assets/preview.gif)
 
 # Digital Garden
 
