@@ -26,11 +26,10 @@ Provide an introduction to your project. Explain what it does, its purpose, and 
 
 ## Features
 
-Highlight the key features of your project:
+- Dinamic changing background according to the mouse position
 
-- Feature 1: Describe feature 1.
-- Feature 2: Describe feature 2.
-- ...
+- Generates dynamic changing backgrounds with the option to generate new patterns.
+  
 
 ## Getting Started
 
