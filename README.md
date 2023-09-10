@@ -11,7 +11,7 @@ Made using React and NodeJs
 
 - [Demo](#demo)
 - [Features](#features)
-- [Getting Started](#getting-started)
+- [Installation](#installation)
 - [Usage](#usage)
 - [Technologies Used](#technologies-used)
 - [Contributing](#contributing)
@@ -31,19 +31,7 @@ Provide an introduction to your project. Explain what it does, its purpose, and 
 - Generates dynamic changing backgrounds with the option to generate new patterns.
   
 
-## Getting Started
-
-These instructions will help you set up and run the project on your local machine. 
-
-### Prerequisites
-
-List any software, tools, or dependencies that users need to install before using your project.
-
-- Prerequisite 1
-- Prerequisite 2
-- ...
-
-### Installation
+## Installation
 
 Step-by-step instructions on how to install your project.
 
