@@ -48,20 +48,22 @@ List any software, tools, or dependencies that users need to install before usin
 
 Step-by-step instructions on how to install your project.
 
-1. Clone the repository.
+Clone the repository.
+   
    ```
    git clone https://github.com/your-username/your-project.git
-```
    cd your-project
-
    npm install
   ```
 
 Start the application.
-shell
-Copy code
+
+```
 npm start
+```
+
 Open your web browser and visit http://localhost:3000 to access the application.
+
 ## Technologies Used
 React
 Node.js
