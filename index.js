@@ -15,6 +15,7 @@ app.post('/save-svg', (req, res) => {
   const outputPath = path.join(__dirname, 'client', 'src', 'assets', 'saved-artwork.svg');
   
   fs.writeFileSync(outputPath, svgData);
+  console.log(req.body.svgData)
 
   res.status(200).json({ message: 'SVG saved successfully' });
 });
