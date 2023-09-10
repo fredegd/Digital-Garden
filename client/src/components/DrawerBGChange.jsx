@@ -2,7 +2,6 @@ import * as React from "react";
 import { useState, useEffect } from "react";
 import Box from "@mui/material/Box";
 import Drawer from "@mui/material/Drawer";
-import SwipeableDrawer from "@mui/material/SwipeableDrawer";
 
 import Button from "@mui/material/Button";
 import Artwork from "./Artwork";
@@ -29,7 +28,7 @@ export default function DrawerBGChange({ bgImage, setBgImage }) {
 
   return (
     <div>
-      <Button onClick={toggleDrawer(true)} sx={{position:"absolute",top:"4rem", right:"0"}}>change background</Button>
+      <Button onClick={toggleDrawer(true)} sx={{position:"absolute",top:"5rem", right:"0"}}>change background</Button>
       <Drawer
         anchor={"right"}
         open={state}
