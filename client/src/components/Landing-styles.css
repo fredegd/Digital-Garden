@@ -5,7 +5,7 @@
   /* height: 100vh; */
   overflow: scroll;
 }
-#container {
+#gridContainer {
   position: fixed;
   top: 0;
   width: 100vw;
@@ -32,7 +32,6 @@
 
 .intro {
   position: relative;
-  /* background-image: url("./assets/ele-Kopie.jpg"); */
   background-size: cover;
   min-height: 50vh;
   display: flex;
@@ -42,8 +41,7 @@
   width: 70%;
   overflow: scroll;
   animation: 0.5s ease-out 0s 1 slideInFromLeft;
-  /* margin-bottom: -50rem; */
-  /* z-index: 1000; */
+
 }
 
 

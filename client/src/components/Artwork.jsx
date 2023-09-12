@@ -205,10 +205,8 @@ function Artwork({ bgImage, setBgImage }) {
   
 
   return (
-    <div>
-      <div ref={canvasRef} onClick={handleDrawAndStore}></div>
+    <div >
 
-      <h4>Tap to Generate a new Pattern</h4>
       <div>
         <label>Number of Strokes</label>
         <input
@@ -233,7 +231,10 @@ function Artwork({ bgImage, setBgImage }) {
         />
         {gridSize}
       </div>
+      <button onClick={handleDrawAndStore}>Generate</button>
       <button onClick={handleHardSave}>save SVG</button>
+      <h4>Tap to Generate a new Pattern</h4>
+      <div ref={canvasRef} onClick={handleDrawAndStore}></div>
     </div>
   );
 }

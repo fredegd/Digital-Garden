@@ -14,7 +14,7 @@ export default function Landing() {
   const calculateGridSize = () => {
     const newNumRows = window.innerHeight > window.innerWidth ? 11 : 7;
     const newNumCols = window.innerHeight > window.innerWidth ? 7 : 11;
-    console.log(newNumRows, newNumCols)
+    console.log(newNumRows, newNumCols);
     return { numRows: newNumRows, numCols: newNumCols };
   };
   const maxScale = 1.0;
@@ -29,23 +29,20 @@ export default function Landing() {
   //   }
   // }, []);
 
-
-
-
   // State variable to store the fill color
 
   useEffect(() => {
     setGridSize(calculateGridSize());
 
-    const container = document.getElementById("container");
+    const gridContainer = document.getElementById("gridContainer");
 
-    container.style.setProperty("--num-rows", gridSize.numRows);
-    container.style.setProperty("--num-cols", gridSize.numCols);
-    container.style.setProperty(
+    gridContainer.style.setProperty("--num-rows", gridSize.numRows);
+    gridContainer.style.setProperty("--num-cols", gridSize.numCols);
+    gridContainer.style.setProperty(
       "grid-template-columns",
       `repeat(${gridSize.numCols},1fr )`
     );
-    container.style.setProperty(
+    gridContainer.style.setProperty(
       "grid-template-rows",
       `repeat(${gridSize.numRows},1fr )`
     );
@@ -54,32 +51,32 @@ export default function Landing() {
     const createSquare = () => {
       const square = document.createElement("div");
       square.classList.add("square");
-      container.appendChild(square);
+      gridContainer.appendChild(square);
       return square;
     };
 
-    const squares = Array.from({ length: gridSize.numRows * gridSize.numCols }, createSquare);
+    const squares = Array.from(
+      { length: gridSize.numRows * gridSize.numCols },
+      createSquare
+    );
 
     if (bgImage) {
-    squares.forEach((square) => {
-      square.style.backgroundImage = `url(data:image/svg+xml;base64,${btoa(
-        bgImage
-      )})`;
-      square.style.backgroundPosition = "center";
-      // square.style.backgroundImage = `url(${bgImage.src})`;
-      // square.style.backgroundPosition = `${bgImage.width / 2}px ${
-      //   bgImage.height / 2
-      // }px`;
-    });
-  }
+      squares.forEach((square) => {
+        square.style.backgroundImage = `url(data:image/svg+xml;base64,${btoa(
+          bgImage
+        )})`;
+        square.style.backgroundPosition = "center";
+      });
+    }
 
     function handleMouseMove(e) {
-      const containerRect = container.getBoundingClientRect();
-      const tileWidth = containerRect.width / gridSize.numCols;
-      const tileHeight = containerRect.height / gridSize.numRows;
-      const newMouseX = e.clientX - containerRect.width * 0.5 - tileWidth * 0.5;
+      const gridContainerRect = gridContainer.getBoundingClientRect();
+      const tileWidth = gridContainerRect.width / gridSize.numCols;
+      const tileHeight = gridContainerRect.height / gridSize.numRows;
+      const newMouseX =
+        e.clientX - gridContainerRect.width * 0.5 - tileWidth * 0.5;
       const newMouseY =
-        e.clientY - containerRect.height * 0.5 - tileHeight * 0.5;
+        e.clientY - gridContainerRect.height * 0.5 - tileHeight * 0.5;
 
       setMouseX(newMouseX);
       setMouseY(newMouseY);
@@ -91,15 +88,15 @@ export default function Landing() {
           col,
           0,
           gridSize.numCols,
-          -containerRect.width / 2,
-          containerRect.width / 2
+          -gridContainerRect.width / 2,
+          gridContainerRect.width / 2
         );
         const yt = map(
           row,
           0,
           gridSize.numRows,
-          -containerRect.height / 2,
-          containerRect.height / 2
+          -gridContainerRect.height / 2,
+          gridContainerRect.height / 2
         );
         const distance = Math.sqrt(
           (newMouseX - xt) ** 2 + (newMouseY - yt) ** 2
@@ -108,7 +105,7 @@ export default function Landing() {
           maxScale,
           maxScale *
             Math.abs(
-              map(distance, 0, containerRect.width / 2, 3 / Math.sqrt(2), 0)
+              map(distance, 0, gridContainerRect.width / 2, 3 / Math.sqrt(2), 0)
             )
         );
 
@@ -117,29 +114,28 @@ export default function Landing() {
         square.style.opacity = `${map(
           distance,
           0,
-          containerRect.width / 2,
+          gridContainerRect.width / 2,
           1.5,
           0.1
         )}`;
 
         // Calculate background position based on the square's position
-        const bgX = containerRect.width / 2 - xt;
-        const bgY = containerRect.height / 2 - yt;
+        const bgX = gridContainerRect.width / 2 - xt;
+        const bgY = gridContainerRect.height / 2 - yt;
         square.style.backgroundPosition = `${bgX}px ${bgY}px`;
-        square.style.backgroundSize = `${containerRect.width * multiplier}px ${
-          containerRect.height * multiplier
-        }px`;
+        square.style.backgroundSize = `${
+          gridContainerRect.width * multiplier
+        }px ${gridContainerRect.height * multiplier}px`;
         square.style.transform = `translate(${
           (-tileWidth / 2) * multiplier + tileWidth / 2
         }px, ${(-tileHeight / 2) * multiplier + tileHeight / 2}px)`;
       });
     }
 
-
     function handleWindowResize() {
       setGridSize(calculateGridSize());
     }
-  
+
     window.addEventListener("resize", handleWindowResize);
 
     // Attach the mousemove event to the document object
@@ -150,24 +146,17 @@ export default function Landing() {
       document.removeEventListener("mousemove", handleMouseMove);
       window.removeEventListener("resize", handleWindowResize);
 
-      container.innerHTML = "";
+      gridContainer.innerHTML = "";
     };
   }, [bgImage]);
-
+  // a function to map a value from one range to another range
   function map(value, fromLow, fromHigh, toLow, toHigh) {
     return (
       ((value - fromLow) * (toHigh - toLow)) / (fromHigh - fromLow) + toLow
     );
   }
 
-  const textStyle = {
-    zIndex: "100",
-    color: "#000",
-    // backgroundColor: "#f1f1f1",
-    // mixBlendMode: "difference",
-  };
-
-  // Function to generate a random color
+  // Function to generate a random colors
   const getRandomColor = () => {
     const letters = "0123456789ABCDEF";
     let color = "#";
@@ -179,30 +168,28 @@ export default function Landing() {
 
   return (
     <div className="big-container">
-     
-
       <div className="intro">
-        <h1 style={textStyle}>Fred Egidi</h1>
-        <h2 style={textStyle}>
+        <h1 style={{ zIndex: "100" }}>Fred Egidi</h1>
+        <h2 style={{ zIndex: "100" }}>
           <Typewriter
-             options={{
+            options={{
               loop: true,
-             }}
+            }}
             onInit={(typewriter) => {
               typewriter
-                 .typeString("Full Stack Web developer  ")
+                .typeString("Full Stack Web developer  ")
                 // .callFunction(() => {
                 //   console.log("String typed out!");
                 // })
-                 .pauseFor(2500)
-                 .deleteAll()
-                 .typeString("Creative Human  Being ")
-         
-                 .pauseFor(250)
-                 .deleteChars(10)
-                 .typeString("Based in Berlin Germany ")
-                 .pauseFor(2500)
-                  .start()
+                .pauseFor(2500)
+                .deleteAll()
+                .typeString("Creative Human  Being ")
+
+                .pauseFor(250)
+                .deleteChars(10)
+                .typeString("Based in Berlin Germany ")
+                .pauseFor(2500)
+                .start();
               // .callFunction(() => {
               //   console.log("All strings were deleted");
               // })
@@ -211,10 +198,11 @@ export default function Landing() {
           />
         </h2>
       </div>
-      <div style={textStyle}>
+
+      <div style={{ zIndex: "100" }}>
         <DrawerBGChange bgImage={bgImage} setBgImage={setBgImage} />{" "}
       </div>
-      <div className="container" id="container"></div>
+      <div className="gridContainer" id="gridContainer"></div>
     </div>
   );
 }
