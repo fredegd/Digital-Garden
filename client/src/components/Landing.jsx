@@ -5,6 +5,9 @@ import "./Landing-styles.css";
 import DrawerBGChange from "./DrawerBGChange";
 
 export default function Landing() {
+  // State variables to store mouse positions
+  const [mouseX, setMouseX] = useState(0);
+  const [mouseY, setMouseY] = useState(0);
 
   const [gridSize, setGridSize] = useState({ numRows: 11, numCols: 7 });
 
@@ -17,20 +20,17 @@ export default function Landing() {
   const maxScale = 1.0;
   //State variables to store the background image and the SVG data
 
-  const [bgImage, setBgImage] = useState("");
+  const [bgImage, setBgImage] = useState();
 
-  useEffect(() => {
-    const svgData = localStorage.getItem("svgData");
-    if (svgData) {
-      setBgImage(svgData);
-    }
-  }, []);
+  // useEffect(() => {
+  //   const svgData = localStorage.getItem("svgData");
+  //   if (svgData) {
+  //     setBgImage(svgData);
+  //   }
+  // }, []);
 
 
 
-  // State variables to store mouse positions
-  const [mouseX, setMouseX] = useState(0);
-  const [mouseY, setMouseY] = useState(0);
 
   // State variable to store the fill color
 
@@ -185,25 +185,24 @@ export default function Landing() {
         <h1 style={textStyle}>Fred Egidi</h1>
         <h2 style={textStyle}>
           <Typewriter
-            options={{
-              strings: [
-                "Creative Web developer  ",
-                "welcome to my digital garden  ",
-                "greetings from Berlin Germany ",
-                "   .",
-                "apologies for the inconvenience",
-              ],
-              autoStart: true,
+             options={{
               loop: true,
-            }}
+             }}
             onInit={(typewriter) => {
               typewriter
-                // .typeString()
+                 .typeString("Full Stack Web developer  ")
                 // .callFunction(() => {
                 //   console.log("String typed out!");
                 // })
-                .pauseFor(2500)
-                .deleteAll();
+                 .pauseFor(2500)
+                 .deleteAll()
+                 .typeString("Creative Human  Being ")
+         
+                 .pauseFor(250)
+                 .deleteChars(10)
+                 .typeString("Based in Berlin Germany ")
+                 .pauseFor(2500)
+                  .start()
               // .callFunction(() => {
               //   console.log("All strings were deleted");
               // })
