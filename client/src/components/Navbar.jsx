@@ -68,16 +68,16 @@ function Navbar(props) {
           <Typography
             variant="h6"
             component="div"
-            fontFamily={"Montserrat"}
+            fontFamily={"IBM Plex Mono"}
             sx={{ flexGrow: 1, display: { xs: "none", sm: "block" } }}
           >
-            fredegd
+            Fred Egidi
           </Typography>
 
           <Box sx={{ display: { xs: "none", sm: "block" } }}>
             {navItems.map((item) => (
               <Link key={item.id} href={item.linkTo} underline="hover">
-                <Button sx={{ color: "#f1f1f1" }}>{item.name}</Button>
+                <Button sx={{ color: "#111111" }}>{item.name}</Button>
               </Link>
             ))}
           </Box>

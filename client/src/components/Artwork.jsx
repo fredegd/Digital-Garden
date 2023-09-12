@@ -1,9 +1,23 @@
 import React, { useEffect, useRef, useState } from "react";
 import p5 from "p5";
-
+import Button from "@mui/material/Button";
+import Slider from "@mui/material/Slider";
+import Box from "@mui/material/Box";
+import Typography from "@mui/material/Typography";
 function Artwork({ bgImage, setBgImage }) {
   const canvasRef = useRef(null);
   const p5CanvasRef = useRef(null); // Declare p5CanvasRef here
+
+  const getRandomHexColor = () => {
+    const hexChars = "0123456789abcdef";
+    let color = "#";
+    for (let i = 0; i < 6; i++) {
+      const randomIndex = Math.floor(Math.random() * hexChars.length);
+      color += hexChars[randomIndex];
+    }
+    return color;
+  };
+
   // Initial gridSize
   const [gridSize, setGridSize] = useState(
     localStorage.getItem("gridSize")
@@ -15,6 +29,17 @@ function Artwork({ bgImage, setBgImage }) {
     localStorage.getItem("numStrokes")
       ? parseInt(localStorage.getItem("numStrokes"))
       : 7
+  );
+
+  const [color1, setColor1] = useState(
+    localStorage.getItem("col1")
+      ? localStorage.getItem("col1")
+      : getRandomHexColor()
+  );
+  const [color2, setColor2] = useState(
+    localStorage.getItem("col2")
+      ? localStorage.getItem("col2")
+      : getRandomHexColor()
   );
 
   useEffect(() => {
@@ -30,7 +55,6 @@ function Artwork({ bgImage, setBgImage }) {
           "image/svg+xml"
         );
         const svgLines = svgElement.querySelectorAll("line");
-        console.log(svgLines);
         // Loop through each line in the SVG and draw it onto the canvas
         svgLines.forEach((line) => {
           const x1 = parseFloat(line.getAttribute("x1"));
@@ -55,7 +79,6 @@ function Artwork({ bgImage, setBgImage }) {
         const pointSize = p.width / gridSize;
 
         for (let i = 0; i < 2; i++) {
-          const [color1, color2] = getRandomHexColors();
           const col = i % 2 === 0 ? color1 : color2;
 
           let startIndex = Math.floor(p.random(gridSize ** 2));
@@ -110,12 +133,11 @@ function Artwork({ bgImage, setBgImage }) {
     return () => {
       p5Canvas.remove();
     };
-  }, [gridSize, numStrokes, bgImage]);
+  }, [gridSize, numStrokes, bgImage, color1, color2]);
 
   //if no bgImage in local storage, draw once and store on local storage
   useEffect(() => {
     const svgData = localStorage.getItem("svgData");
-    console.log(svgData);
 
     if (svgData) {
       setBgImage(svgData);
@@ -125,25 +147,16 @@ function Artwork({ bgImage, setBgImage }) {
     }
   }, []);
 
-  const getRandomHexColors = () => {
-    const hexChars = "0123456789abcdef";
-    const getRandomHexColor = () => {
-      let color = "#";
-      for (let i = 0; i < 6; i++) {
-        const randomIndex = Math.floor(Math.random() * hexChars.length);
-        color += hexChars[randomIndex];
-      }
-      return color;
-    };
+  const handleColor1Change = () => {
+    const newColor = getRandomHexColor();
+    setColor1(newColor);
+    localStorage.setItem("col1", newColor); // Save col1
+  };
 
-    let color1, color2;
-
-    do {
-      color1 = getRandomHexColor();
-      color2 = getRandomHexColor();
-    } while (color1 === color2); // Ensure color2 is different from color1
-
-    return [color1, color2];
+  const handleColor2Change = () => {
+    const newColor = getRandomHexColor();
+    setColor2(newColor);
+    localStorage.setItem("col2", newColor); // Save col2
   };
 
   const saveSVGLocally = (svgData) => {
@@ -152,6 +165,8 @@ function Artwork({ bgImage, setBgImage }) {
       localStorage.setItem("svgData", svgData);
       localStorage.setItem("gridSize", gridSize); // Save gridSize
       localStorage.setItem("numStrokes", numStrokes); // Save numStrokes
+      localStorage.setItem("col1", color1); // Save col1
+      localStorage.setItem("col2", color2); // Save col2
       console.log("SVG data saved locally.");
     } catch (error) {
       console.error("Error while saving SVG data locally:", error);
@@ -166,14 +181,12 @@ function Artwork({ bgImage, setBgImage }) {
   };
 
   const handleGridSizeChange = (event, newValue) => {
-    console.log(event);
     localStorage.setItem("gridSize", newValue); // Save gridSize
 
     setGridSize(newValue);
   };
 
   const handleNumStrokesChange = (event, newValue) => {
-    console.log(event);
     localStorage.setItem("numStrokes", newValue); // Save numStrokes
 
     setNumStrokes(newValue);
@@ -181,60 +194,90 @@ function Artwork({ bgImage, setBgImage }) {
 
   const handleHardSave = () => {
     if (p5CanvasRef.current) {
-      const svgData = localStorage.getItem('svgData');
+      const svgData = localStorage.getItem("svgData");
       if (!svgData) {
-        console.error('SVG data not found in local storage.');
+        console.error("SVG data not found in local storage.");
         return;
       }
-  
+
       // Create a Blob from the stored SVG data
-      const blob = new Blob([svgData], { type: 'image/svg+xml' });
-  
+      const blob = new Blob([svgData], { type: "image/svg+xml" });
+
       // Create a download link
-      const a = document.createElement('a');
+      const a = document.createElement("a");
       a.href = URL.createObjectURL(blob);
-  
+
       // Set the file name for the download
-      a.download = 'stored_artwork.svg';
-  
+      a.download = "stored_artwork.svg";
+
       // Programmatically trigger the download
       a.click();
     }
   };
-  
-  
 
   return (
-    <div >
+    <div>
+      <Box
+        sx={{ display: "flex", flexDirection: "column", alignItems: "center" }}
+      >
+        <Box sx={{ width: 400 }}>
+          <div ref={canvasRef} onClick={handleDrawAndStore}>
+            <h4>Tap to Generate a new Pattern</h4>
+          </div>
+        </Box>
+        <Box sx={{ width: 300 }}>
+          <Slider
+            aria-label="numStrokes"
+            defaultValue={numStrokes}
+            valueLabelDisplay="on"
+            step={1}
+            marks
+            min={2}
+            max={12}
+            onChange={handleNumStrokesChange}
+          />
+          <Typography>Stroke Amount: {numStrokes}</Typography>
+        </Box>
 
-      <div>
-        <label>Number of Strokes</label>
-        <input
-          type="range"
-          min="2"
-          max="8"
-          step="1"
-          value={numStrokes}
-          onChange={(e) => handleNumStrokesChange(e, e.target.value)}
-        />
-        {numStrokes}
-      </div>
-      <div>
-        <label>Matrix Grid Size</label>
-        <input
-          type="range"
-          min="4"
-          max="10"
-          step="1"
-          value={gridSize}
-          onChange={(e) => handleGridSizeChange(e, e.target.value)}
-        />
-        {gridSize}
-      </div>
-      <button onClick={handleDrawAndStore}>Generate</button>
-      <button onClick={handleHardSave}>save SVG</button>
-      <h4>Tap to Generate a new Pattern</h4>
-      <div ref={canvasRef} onClick={handleDrawAndStore}></div>
+        <Box sx={{ width: 300 }}>
+          <Slider
+            aria-label="gridSize"
+            defaultValue={gridSize}
+            valueLabelDisplay="on"
+            step={1}
+            marks
+            min={4}
+            max={10}
+            onChange={handleGridSizeChange}
+          />
+          <Typography>Matrix Grid Size: {gridSize}</Typography>
+        </Box>
+
+        <Box sx={{ width: 300, mt: "2rem" }}>
+          <Button
+            onClick={handleColor1Change}
+            style={{ background: `${color1}`, width: "300px" }}
+          >
+            Color 1
+          </Button>
+
+          <Button
+            onClick={handleColor2Change}
+            style={{ background: `${color2}`, width: "300px" }}
+          >
+            Color 2
+          </Button>
+        </Box>
+
+        <Box sx={{ width: 300, mt: "2rem" }}>
+          <Button onClick={handleDrawAndStore} style={{ width: "300px" }}>
+            Generate
+          </Button>
+          <Button onClick={handleHardSave} style={{ width: "300px" }}>
+            save SVG
+          </Button>
+        </Box>
+      </Box>
     </div>
   );
 }
