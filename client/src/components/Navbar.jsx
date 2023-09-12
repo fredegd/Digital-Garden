@@ -15,7 +15,7 @@ import MenuIcon from "@mui/icons-material/Menu";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
-import {navItems} from "../navItems"
+import { navItems } from "../navItems";
 import { cols } from "../colorSchema";
 const drawerWidth = 240;
 
@@ -28,7 +28,7 @@ function Navbar(props) {
   };
 
   const drawer = (
-    <Box onClick={handleDrawerToggle} sx={{ textAlign: "center"}}>
+    <Box onClick={handleDrawerToggle} sx={{ textAlign: "center" }}>
       <Typography variant="h6" sx={{ my: 2 }}>
         Fred Egidi
       </Typography>
@@ -36,11 +36,11 @@ function Navbar(props) {
       <List>
         {navItems.map((item) => (
           <ListItem key={item.id} disablePadding>
-             <Link href={item.linkTo} underline="hover">
-                <Button key={item.id} sx={{ color: "#f1f1f1" }}>
-                  {item.name}
-                </Button>
-              </Link>
+            <Link href={item.linkTo} underline="hover">
+              <Button key={item.id} sx={{ color: "#f1f1f1" }}>
+                {item.name}
+              </Button>
+            </Link>
           </ListItem>
         ))}
       </List>
@@ -51,10 +51,10 @@ function Navbar(props) {
     window !== undefined ? () => window().document.body : undefined;
 
   return (
-    <Box sx={{ display: "flex"}}>
+    <Box sx={{ display: "flex" }}>
       <CssBaseline />
       <AppBar component="nav">
-        <Toolbar sx={{backgroundColor: cols.main}}>
+        <Toolbar sx={{ backgroundColor: cols.main }}>
           <IconButton
             color="inherit"
             aria-label="open drawer"
@@ -69,14 +69,12 @@ function Navbar(props) {
             component="div"
             sx={{ flexGrow: 1, display: { xs: "none", sm: "block" } }}
           >
-            Fred Egidi - Digital Garden
+            fredegd
           </Typography>
           <Box sx={{ display: { xs: "none", sm: "block" } }}>
             {navItems.map((item) => (
-              <Link key={item.id}  href={item.linkTo} underline="hover">
-                <Button sx={{ color: "#f1f1f1" }}>
-                  {item.name}
-                </Button>
+              <Link key={item.id} href={item.linkTo} underline="hover">
+                <Button sx={{ color: "#f1f1f1" }}>{item.name}</Button>
               </Link>
             ))}
           </Box>

@@ -27,25 +27,32 @@ export default function DrawerBGChange({ bgImage, setBgImage }) {
 
   return (
     <div>
-      <Button onClick={toggleDrawer(true)} sx={{position:"absolute",top:"5rem", right:"0"}}>change background</Button>
+      <Button
+        onClick={toggleDrawer(true)}
+        sx={{ position: "absolute", top: "5rem", right: "0" }}
+      >
+        change background
+      </Button>
       <Drawer
         anchor={"right"}
         open={state}
         onClose={toggleDrawer(false)}
-         variant="persistent"
+       variant="persistent"
       >
         <Box
           sx={{
-            width: 450,
+            width: 400,
             zIndex: 1000,
             marginTop: "4rem",
-            zIndex: 1000,   
           }}
           role="presentation"
           // onClick={toggleDrawer(false)}
-         // onKeyDown={toggleDrawer(false)}
+          // onKeyDown={toggleDrawer(false)}
         >
-             <Button onClick={closeDrawer} style={{ float: "right", margin: "8px" }}>
+          <Button
+            onClick={closeDrawer}
+            style={{ float: "right", margin: "8px" }}
+          >
             Close
           </Button>
           <Artwork bgImage={bgImage} setBgImage={setBgImage} />

@@ -20,17 +20,28 @@
   opacity: 0.25;
 }
 
+@keyframes slideInFromLeft {
+  0% {
+    transform: translateY(10%);
+  }
+  100% {
+    transform: translateY(0);
+  }
+}
+
+
 .intro {
   position: relative;
   /* background-image: url("./assets/ele-Kopie.jpg"); */
   background-size: cover;
-  min-height: 100vh;
+  min-height: 50vh;
   display: flex;
   flex-direction: column;
   justify-content: center;
   gap: 2rem;
   width: 70%;
   overflow: scroll;
+  animation: 0.5s ease-out 0s 1 slideInFromLeft;
   /* margin-bottom: -50rem; */
   /* z-index: 1000; */
 }
