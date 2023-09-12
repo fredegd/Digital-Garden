@@ -37,7 +37,7 @@ function Navbar(props) {
         {navItems.map((item) => (
           <ListItem key={item.id} disablePadding>
             <Link href={item.linkTo} underline="hover">
-              <Button key={item.id} sx={{ color: "#f1f1f1" }}>
+              <Button key={item.id} sx={{ color: "#111111" }}>
                 {item.name}
               </Button>
             </Link>
@@ -77,7 +77,7 @@ function Navbar(props) {
           <Box sx={{ display: { xs: "none", sm: "block" } }}>
             {navItems.map((item) => (
               <Link key={item.id} href={item.linkTo} underline="hover">
-                <Button sx={{ color: "#111111" }}>{item.name}</Button>
+                <Button sx={{ color: "#f1f1f1" }}>{item.name}</Button>
               </Link>
             ))}
           </Box>
