@@ -250,7 +250,7 @@ function Artwork({ bgImage, setBgImage }) {
             max={10}
             onChange={handleGridSizeChange}
           />
-          <Typography>Matrix Grid Size: {gridSize}</Typography>
+          <Typography>Matrix Grid Size: {gridSize}x{gridSize}</Typography>
         </Box>
 
         <Box sx={{ width: 300, mt: "2rem" }}>
