@@ -64,13 +64,16 @@ function Navbar(props) {
           >
             <MenuIcon />
           </IconButton>
+
           <Typography
             variant="h6"
             component="div"
+            fontFamily={"Montserrat"}
             sx={{ flexGrow: 1, display: { xs: "none", sm: "block" } }}
           >
             fredegd
           </Typography>
+
           <Box sx={{ display: { xs: "none", sm: "block" } }}>
             {navItems.map((item) => (
               <Link key={item.id} href={item.linkTo} underline="hover">

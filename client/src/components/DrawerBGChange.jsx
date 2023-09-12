@@ -37,8 +37,7 @@ export default function DrawerBGChange({ bgImage, setBgImage }) {
         anchor={"right"}
         open={state}
         onClose={toggleDrawer(false)}
-       variant="persistent"
-
+        variant="persistent"
       >
         <Box
           sx={{
@@ -48,14 +47,14 @@ export default function DrawerBGChange({ bgImage, setBgImage }) {
             display: "flex",
             flexDirection: "column",
           }}
-          role="presentation">
-          
+          role="presentation"
+        >
           <Button
-              onClick={closeDrawer}
-              style={{ float: "right", margin: "8px", alignSelf: "flex-end"  }}
-            >
-              Close
-            </Button>
+            onClick={closeDrawer}
+            style={{ float: "right", margin: "8px", alignSelf: "flex-end" }}
+          >
+            Close
+          </Button>
           <Artwork bgImage={bgImage} setBgImage={setBgImage} />
         </Box>
       </Drawer>
