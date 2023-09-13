@@ -1,4 +1,5 @@
 const cloudinary = require("cloudinary");
+const upload = require("./multer-upload");
 
 cloudinary.config({
   cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
@@ -12,10 +13,9 @@ const cloudinaryUpload = async (req, res, next) => {
   try {
     const { file } = req;
     const result = await cloudinary.v2.uploader.unsigned_upload(
-      file.path,
-      "odgsuzdgvzszogzuovszdddfzgsuvodv" // unsigned upload parameter
-    );
-    console.log(result, "is the result");
+      file.path, upload_preset = "profile_pictures", 
+        );
+    // console.log(result, "is the result");
 
     result.localPath = file.path;
     req.file = result;

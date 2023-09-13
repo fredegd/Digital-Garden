@@ -19,7 +19,7 @@ const blogSchema = new mongoose.Schema({
   author: {
     type: mongoose.Schema.Types.ObjectId,
     required: true,
-    ref: "User",
+    ref: "Author",
   },
   createdAt: {
     type: Date,

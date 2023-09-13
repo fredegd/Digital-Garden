@@ -6,8 +6,8 @@ const verifyToken = (req, res, next) => {
     const token = req.cookies.access_token;
     if (token) {
       const payload = jwt.verify(token, process.env.JWT_SECRET);
-
-      req.user = payload;
+      req.author = payload;
+      // console.log(req.user, "is the req.user");
 
       return next();
     }

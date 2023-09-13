@@ -2,8 +2,8 @@ const { ErrorResponse } = require("../utils/ErrorResponse");
 
 const isAccountOwner = (req, res, next) => {
   try {
-    console.log(req.user.username)
-    if (req.user.username === req.params.username) {
+    console.log(req.author.username)
+    if (req.author.username === req.params.username) {
 
         next()
     }else{

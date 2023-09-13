@@ -12,7 +12,7 @@ const upload = require('../middlewares/multer-upload');
 
 const authorRouter = express.Router();
 
-authorRouter.post('/', verifyToken, authorize('admin'), upload.single('profilePicture'), cloudinaryUpload, createAuthor);
+authorRouter.post('/create', upload.single('profilePicture'), cloudinaryUpload, createAuthor);
 
 authorRouter.get('/', getAuthors);
 authorRouter.get('/:id', verifyToken, isAccountOwner,   getAuthor);

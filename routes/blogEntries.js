@@ -10,14 +10,14 @@ const { authorize } = require("../middlewares/authorize");
 
 const blogsRouter = express.Router();
 
-blogsRouter.post('/', verifyToken, authorize('admin'), upload.single('blogImage'), cloudinaryUpload, handlePostCreation, createBlog);
+blogsRouter.post('/create', verifyToken, authorize('admin'), upload.single('blogImage'), cloudinaryUpload, handlePostCreation, createBlog);
 
-blogsRouter.get('/', getBlogs);
-blogsRouter.get('/:id', getBlog);
+blogsRouter.get('/read', getBlogs);
+blogsRouter.get('/read/:id', getBlog);
 
-blogsRouter.put('/:id', updateBlog);
+blogsRouter.put('/update/:id', updateBlog);
 
-blogsRouter.delete('/:id', deleteBlog);
+blogsRouter.delete('/delete/:id', deleteBlog);
 
 
 module.exports = blogsRouter;

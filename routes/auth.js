@@ -5,7 +5,7 @@ const { authorize } = require("../middlewares/authorize");
 const { isAccountOwner } = require("../middlewares/isAccountOwner");
 
 const authRouter = express.Router();
-authRouter.get("/profile", verifyToken, authorize("user"), getProfile);
+authRouter.get("/profile", verifyToken, authorize("admin"), getProfile);
 authRouter.post("/login", login);
 authRouter.post("/logout", logout);
 

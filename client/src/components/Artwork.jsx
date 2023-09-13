@@ -26,14 +26,14 @@ function Artwork({ bgImage, setBgImage }) {
       ? parseInt(localStorage.getItem("gridSize"))
       : 4
   );
-  // Initial numStrokes
-  const [numStrokes, setNumStrokes] = useState(
-    localStorage.getItem("numStrokes")
-      ? parseInt(localStorage.getItem("numStrokes"))
+  // Initial segmentsAmount
+  const [segmentsAmount, setNumStrokes] = useState(
+    localStorage.getItem("segmentsAmount")
+      ? parseInt(localStorage.getItem("segmentsAmount"))
       : 7
   );
 
-const[ maxSegmentAmount, setMaxSegmentAmount]= useState(Math.floor(gridSize*gridSize*0.5+gridSize))
+const[ maxSegmentAmount, setMaxSegmentAmount]= useState(Math.floor(gridSize*gridSize*0.5))
 
 
 
@@ -91,7 +91,7 @@ const[ maxSegmentAmount, setMaxSegmentAmount]= useState(Math.floor(gridSize*grid
           let currentIndex = startIndex;
           const visitedPoints = new Set();
 
-          for (let j = 0; j < numStrokes; j++) {
+          for (let j = 0; j < segmentsAmount; j++) {
             const startX =
               (currentIndex % gridSize) * pointSize + pointSize / 2;
             const startY =
@@ -139,7 +139,7 @@ const[ maxSegmentAmount, setMaxSegmentAmount]= useState(Math.floor(gridSize*grid
     return () => {
       p5Canvas.remove();
     };
-  }, [gridSize, numStrokes, bgImage, color1, color2]);
+  }, [gridSize, segmentsAmount, bgImage, color1, color2]);
 
   //if no bgImage in local storage, draw once and store on local storage
   useEffect(() => {
@@ -170,7 +170,7 @@ const[ maxSegmentAmount, setMaxSegmentAmount]= useState(Math.floor(gridSize*grid
       // Store the SVG data in localStorage
       localStorage.setItem("svgData", svgData);
       localStorage.setItem("gridSize", gridSize); // Save gridSize
-      localStorage.setItem("numStrokes", numStrokes); // Save numStrokes
+      localStorage.setItem("segmentsAmount", segmentsAmount); // Save segmentsAmount
       localStorage.setItem("col1", color1); // Save col1
       localStorage.setItem("col2", color2); // Save col2
       console.log("SVG data saved locally.");
@@ -187,16 +187,18 @@ const[ maxSegmentAmount, setMaxSegmentAmount]= useState(Math.floor(gridSize*grid
   };
 
   const handleGridSizeChange = (event, newValue) => {
-    localStorage.setItem("gridSize", newValue); // Save gridSize
 
     setGridSize(newValue);
-    setMaxSegmentAmount(Math.floor(newValue*newValue*0.5+newValue))
-    setNumStrokes(Math.min(numStrokes, Math.floor(newValue*newValue*0.5+newValue)));
+    localStorage.setItem("gridSize", newValue); // Save gridSize
+    
+    setMaxSegmentAmount(newValue>2? Math.floor(newValue*newValue*0.5+newValue):2)
+    setNumStrokes(Math.floor(newValue*newValue*0.5));
+    localStorage.setItem("segmentsAmount", newValue); // Save segmentsAmount
 
   };
 
   const handleNumStrokesChange = (event, newValue) => {
-    localStorage.setItem("numStrokes", newValue); // Save numStrokes
+    localStorage.setItem("segmentsAmount", newValue); // Save segmentsAmount
 
     setNumStrokes(newValue);
   };
@@ -251,10 +253,10 @@ const[ maxSegmentAmount, setMaxSegmentAmount]= useState(Math.floor(gridSize*grid
         </Box>
 
         <Box sx={{ width: 300 }}>
-          <Typography>Segment Amount: {numStrokes}</Typography>
+          <Typography>Segment Amount: {segmentsAmount}</Typography>
           <Slider
-            aria-label="numStrokes"
-            defaultValue={numStrokes}
+            aria-label="segmentsAmount"
+            defaultValue={segmentsAmount}
             valueLabelDisplay="off"
             step={1}
             marks

@@ -1,6 +1,6 @@
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
-const Authors = require("../models/author");
+const Author = require("../models/author");
 const { ErrorResponse } = require("../utils/ErrorResponse");
 
 ////////////////////////////////////////////////////
@@ -13,23 +13,22 @@ const login = async (req, res, next) => {
   try {
     const { email, password } = req.body;
 
-    const user = await User.findOne({ email }).select("+password");
+    const author = await Author.findOne({ email }).select("+password");
 
-    if (!user) throw new ErrorResponse("User doesn't exist", 404);
+    if (!author) throw new ErrorResponse("Author doesn't exist", 404);
 
-    const isMatch = await bcrypt.compare(password, user.password);
+    const isMatch = await bcrypt.compare(password, author.password);
 
     if (!isMatch) throw new ErrorResponse("Wrong password", 401);
 
     const payload = {
-      id: user._id,
-      username: user.username,
-      email: user.email,
-      profilePicture: user.profilePicture,
-      userWishWelcome: user.userWishWelcome,
-      role: user.role,
-      createdAt: user.createdAt,
-      personalInfo: user.personalInfo,
+      id: author._id,
+      username: author.username,
+      email: author.email,
+      profilePicture: author.profilePicture,
+      role: author.role,
+      createdAt: author.createdAt,
+      personalInfo: author.personalInfo,
     };
 
     const token = jwt.sign(payload, process.env.JWT_SECRET, {
@@ -46,6 +45,8 @@ const login = async (req, res, next) => {
     next(error);
   }
 };
+
+
 ////////////////////////////////////////////////////
 //
 //   LOGOUT
@@ -64,6 +65,8 @@ const logout = async (req, res, next) => {
     next(error);
   }
 };
+
+
 ////////////////////////////////////////////////////
 //
 //   GETPROFILE
@@ -72,9 +75,10 @@ const logout = async (req, res, next) => {
 //
 const getProfile = async (req, res, next) => {
   try {
-    const userId = req.user.id;
-    const user = await User.findOne({ userId });
-    res.status(200).json(user);
+    const userId = req.author._id;
+    console.log(userId)
+    const author = await Author.findOne({ userId });
+    res.status(200).json(author);
   } catch (error) {
     next(error);
   }
