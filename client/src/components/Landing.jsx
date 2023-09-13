@@ -2,9 +2,9 @@ import { useState, useEffect } from "react";
 import Typewriter from "typewriter-effect";
 
 import "./Landing-styles.css";
-import DrawerBGChange from "./DrawerBGChange";
+// import DrawerBGChange from "./DrawerBGChange";
 
-export default function Landing() {
+export default function Landing({ open, setOpen, bgImage}) {
   // State variables to store mouse positions
   const [mouseX, setMouseX] = useState(0);
   const [mouseY, setMouseY] = useState(0);
@@ -20,7 +20,7 @@ export default function Landing() {
   const maxScale = 1.0;
   //State variables to store the background image and the SVG data
 
-  const [bgImage, setBgImage] = useState();
+  // const [bgImage, setBgImage] = useState();
 
   // useEffect(() => {
   //   const svgData = localStorage.getItem("svgData");
@@ -149,6 +149,7 @@ export default function Landing() {
       gridContainer.innerHTML = "";
     };
   }, [bgImage]);
+
   // a function to map a value from one range to another range
   function map(value, fromLow, fromHigh, toLow, toHigh) {
     return (
@@ -156,15 +157,6 @@ export default function Landing() {
     );
   }
 
-  // Function to generate a random colors
-  const getRandomColor = () => {
-    const letters = "0123456789ABCDEF";
-    let color = "#";
-    for (let i = 0; i < 6; i++) {
-      color += letters[Math.floor(Math.random() * 16)];
-    }
-    return color;
-  };
 
   return (
     <div className="big-container">
@@ -186,7 +178,7 @@ export default function Landing() {
                 .typeString("Creative Human  Being ")
 
                 .pauseFor(250)
-                .deleteChars(10)
+                .deleteChars(22)
                 .typeString("Based in Berlin Germany ")
                 .pauseFor(2500)
                 .start();
@@ -199,9 +191,14 @@ export default function Landing() {
         </h2>
       </div>
 
-      <div style={{ zIndex: "100" }}>
-        <DrawerBGChange bgImage={bgImage} setBgImage={setBgImage} />{" "}
-      </div>
+      {/* <div style={{ zIndex: "1000" }}>
+        <DrawerBGChange
+          bgImage={bgImage}
+          setBgImage={setBgImage}
+          open={open}
+          setOpen={setOpen}
+        />{" "}
+      </div> */}
       <div className="gridContainer" id="gridContainer"></div>
     </div>
   );

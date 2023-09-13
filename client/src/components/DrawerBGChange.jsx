@@ -5,48 +5,31 @@ import Drawer from "@mui/material/Drawer";
 import Button from "@mui/material/Button";
 import Artwork from "./Artwork";
 
-export default function DrawerBGChange({ bgImage, setBgImage }) {
+export default function DrawerBGChange({ bgImage, setBgImage, open, setOpen }) {
   const [state, setState] = useState(false);
 
   const toggleDrawer = (open) => (event) => {
-    if (event.type === "keydown") {
-      if (event.key === "Tab" || event.key === "Shift") {
-        return;
-      } else if (event.key === "Escape") {
-        console.log("esc pressed");
-        setState(false);
-      }
-    }
-
     setState(open);
   };
-
   const closeDrawer = () => {
-    setState(false);
+    setOpen(false);
   };
 
   return (
     <div>
-      <Button
-        onClick={toggleDrawer(true)}
-        sx={{ position: "absolute", top: "5rem", right: "0" }}
-      >
-        background pattern
-      </Button>
       <Drawer
         anchor={"right"}
-        open={state}
+        open={open}
         onClose={toggleDrawer(false)}
         variant="persistent"
       >
         <Box
           sx={{
             width: {
-               sm: "400px", // 400px wide on screens wider than 600px (md)
+              sm: "400px", // 400px wide on screens wider than 600px (md)
               xs: "100vw", // Fullscreen on small screens
             },
-            zIndex: 1000,
-            marginTop: "4.5rem",
+            marginTop: "1.2rem",
             display: "flex",
             flexDirection: "column",
           }}
@@ -54,7 +37,11 @@ export default function DrawerBGChange({ bgImage, setBgImage }) {
         >
           <Button
             onClick={closeDrawer}
-            style={{ float: "right", margin: "8px", alignSelf: "flex-end" }}
+            style={{
+              float: "right",
+              marginRight: "8px",
+              alignSelf: "flex-end",
+            }}
           >
             Close
           </Button>

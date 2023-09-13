@@ -4,7 +4,7 @@ import Button from "@mui/material/Button";
 import Slider from "@mui/material/Slider";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
-import "./Artwork-styles.css"
+import "./Artwork-styles.css";
 
 function Artwork({ bgImage, setBgImage }) {
   const canvasRef = useRef(null);
@@ -33,9 +33,9 @@ function Artwork({ bgImage, setBgImage }) {
       : 7
   );
 
-const[ maxSegmentAmount, setMaxSegmentAmount]= useState(Math.floor(gridSize*gridSize*0.5))
-
-
+  const [maxSegmentAmount, setMaxSegmentAmount] = useState(
+    Math.floor(gridSize * gridSize * 0.5)
+  );
 
   const [color1, setColor1] = useState(
     localStorage.getItem("col1")
@@ -50,8 +50,8 @@ const[ maxSegmentAmount, setMaxSegmentAmount]= useState(Math.floor(gridSize*grid
 
   useEffect(() => {
     const sketch = (p) => {
-      const svgWidth = 300;
-      const svgHeight = 300;
+      const svgWidth = 250  ;
+      const svgHeight = 250;
       p.setup = () => {
         p.createCanvas(svgWidth, svgHeight).parent(canvasRef.current);
 
@@ -187,14 +187,14 @@ const[ maxSegmentAmount, setMaxSegmentAmount]= useState(Math.floor(gridSize*grid
   };
 
   const handleGridSizeChange = (event, newValue) => {
-
     setGridSize(newValue);
     localStorage.setItem("gridSize", newValue); // Save gridSize
-    
-    setMaxSegmentAmount(newValue>2? Math.floor(newValue*newValue*0.5+newValue):2)
-    setNumStrokes(Math.floor(newValue*newValue*0.5));
-    localStorage.setItem("segmentsAmount", newValue); // Save segmentsAmount
 
+    setMaxSegmentAmount(
+      newValue > 2 ? Math.floor(newValue * newValue * 0.5 + newValue) : 2
+    );
+    setNumStrokes(Math.floor(newValue * newValue * 0.5));
+    localStorage.setItem("segmentsAmount", newValue); // Save segmentsAmount
   };
 
   const handleNumStrokesChange = (event, newValue) => {
@@ -229,17 +229,20 @@ const[ maxSegmentAmount, setMaxSegmentAmount]= useState(Math.floor(gridSize*grid
   return (
     <div>
       <Box
-        sx={{ display: "flex", flexDirection: "column", alignItems: "center" }}
+        sx={{ display: "flex", flexDirection: "column", alignItems: "center" ,height:"10vh"}}
       >
-        <Box sx={{ width: 300}}>
-
+        <Box sx={{ width: 300 }}>
           <div ref={canvasRef} onClick={handleDrawAndStore} className="canvas">
-          <Typography variant="p" align="right" > Tap to Generate a new Pattern</Typography>
-
+            <Typography variant="p" align="right">
+              {" "}
+              Tap to Generate a new Pattern
+            </Typography>
           </div>
         </Box>
-        <Box sx={{ width: 300 }}>
-          <Typography>Matrix Grid Size: {gridSize}x{gridSize}</Typography>
+        <Box sx={{ width: 250 }}>
+          <Typography>
+            Matrix Grid Size: {gridSize}x{gridSize}
+          </Typography>
           <Slider
             aria-label="gridSize"
             defaultValue={gridSize}
@@ -252,7 +255,7 @@ const[ maxSegmentAmount, setMaxSegmentAmount]= useState(Math.floor(gridSize*grid
           />
         </Box>
 
-        <Box sx={{ width: 300 }}>
+        <Box sx={{ width: 250 }}>
           <Typography>Segment Amount: {segmentsAmount}</Typography>
           <Slider
             aria-label="segmentsAmount"
@@ -269,24 +272,24 @@ const[ maxSegmentAmount, setMaxSegmentAmount]= useState(Math.floor(gridSize*grid
         <Box sx={{ width: 300, mt: "2rem" }}>
           <Button
             onClick={handleColor1Change}
-            style={{ background: `${color1}`, width: "300px" }}
+            style={{ background: `${color1}`, width: "125px" }}
           >
             Color 1
           </Button>
 
           <Button
             onClick={handleColor2Change}
-            style={{ background: `${color2}`, width: "300px" }}
+            style={{ background: `${color2}`, width: "125px" }}
           >
             Color 2
           </Button>
         </Box>
 
         <Box sx={{ width: 300, mt: "2rem" }}>
-          <Button onClick={handleDrawAndStore} style={{ width: "300px" }}>
+          {/* <Button onClick={handleDrawAndStore} style={{ width: "250px" }}>
             Generate
-          </Button>
-          <Button onClick={handleHardSave} style={{ width: "300px" }}>
+          </Button> */}
+          <Button onClick={handleHardSave} style={{ width: "125px" }}>
             save SVG
           </Button>
         </Box>

@@ -1,4 +1,5 @@
-import * as React from "react";
+import React from "react";
+import { useState } from "react";
 import PropTypes from "prop-types";
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
@@ -9,26 +10,34 @@ import IconButton from "@mui/material/IconButton";
 import List from "@mui/material/List";
 import Link from "@mui/material/Link";
 import ListItem from "@mui/material/ListItem";
-import ListItemButton from "@mui/material/ListItemButton";
-import ListItemText from "@mui/material/ListItemText";
+
 import MenuIcon from "@mui/icons-material/Menu";
+import WallpaperIcon from "@mui/icons-material/Wallpaper";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
 import { navItems } from "../navItems";
 import { cols } from "../colorSchema";
-const drawerWidth = 240;
 
-function Navbar(props) {
-  const { window } = props;
-  const [mobileOpen, setMobileOpen] = React.useState(false);
+// const drawerWidth = 240;
+
+export default function Navbar({ window, setOpen }) {
+  // const { window } = props;
+  const [mobileOpen, setMobileOpen] = useState(false);
 
   const handleDrawerToggle = () => {
     setMobileOpen((prevState) => !prevState);
   };
 
+  const handleDrawerBgChange = () => {
+    setOpen((prevState) => !prevState);
+  };
+
   const drawer = (
-    <Box onClick={handleDrawerToggle} sx={{ textAlign: "center" }}>
+    <Box onClick={handleDrawerToggle} sx={{ textAlign: "center" ,  width: {
+      sm: "400px", // 400px wide on screens wider than 600px (md)
+      xs: "100vw", // Fullscreen on small screens
+    },}}>
       <Typography variant="h6" sx={{ my: 2 }}>
         Fred Egidi
       </Typography>
@@ -54,7 +63,8 @@ function Navbar(props) {
     <Box sx={{ display: "flex" }}>
       <CssBaseline />
       <AppBar component="nav">
-        <Toolbar sx={{ backgroundColor: cols.main }}>
+        <Toolbar sx={{ backgroundColor: cols.main, display:"flex",flexDirection:"row", justifyContent:"space-between" }}>
+         
           <IconButton
             color="inherit"
             aria-label="open drawer"
@@ -81,8 +91,14 @@ function Navbar(props) {
               </Link>
             ))}
           </Box>
+
+          <div onClick={handleDrawerBgChange}>
+            <WallpaperIcon />
+          </div>
+
         </Toolbar>
       </AppBar>
+
       <Box component="nav">
         <Drawer
           container={container}
@@ -96,7 +112,6 @@ function Navbar(props) {
             display: { xs: "block", sm: "none" },
             "& .MuiDrawer-paper": {
               boxSizing: "border-box",
-              width: drawerWidth,
             },
           }}
         >
@@ -106,13 +121,3 @@ function Navbar(props) {
     </Box>
   );
 }
-
-// Navbar.propTypes = {
-//   /**
-//    * Injected by the documentation to work in an iframe.
-//    * You won't need it on your project.
-//    */
-//   window: PropTypes.func,
-// };
-
-export default Navbar;

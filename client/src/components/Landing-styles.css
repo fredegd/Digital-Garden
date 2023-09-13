@@ -4,6 +4,7 @@
   align-items: center;
   /* height: 100vh; */
   overflow: scroll;
+  min-height: 100vh;
 }
 #gridContainer {
   position: fixed;
@@ -20,12 +21,15 @@
   opacity: 0.25;
 }
 
-@keyframes slideInFromLeft {
+@keyframes slideIn {
   0% {
-    transform: translateY(10%);
+    transform: translateY(25%);
+    opacity: o;
   }
   100% {
     transform: translateY(0);
+    opacity: 1;
+
   }
 }
 
@@ -37,10 +41,10 @@
   display: flex;
   flex-direction: column;
   justify-content: center;
-  gap: 2rem;
+  /* gap: 2rem; */
   width: 70%;
   overflow: scroll;
-  animation: 0.5s ease-out 0s 1 slideInFromLeft;
+  animation: 0.7s ease-out 0s 1 slideIn;
 
 }
 
