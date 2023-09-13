@@ -4,6 +4,8 @@ import Button from "@mui/material/Button";
 import Slider from "@mui/material/Slider";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
+import "./Artwork-styles.css"
+
 function Artwork({ bgImage, setBgImage }) {
   const canvasRef = useRef(null);
   const p5CanvasRef = useRef(null); // Declare p5CanvasRef here
@@ -31,6 +33,10 @@ function Artwork({ bgImage, setBgImage }) {
       : 7
   );
 
+const[ maxSegmentAmount, setMaxSegmentAmount]= useState(Math.floor(gridSize*gridSize*0.5+gridSize))
+
+
+
   const [color1, setColor1] = useState(
     localStorage.getItem("col1")
       ? localStorage.getItem("col1")
@@ -44,8 +50,8 @@ function Artwork({ bgImage, setBgImage }) {
 
   useEffect(() => {
     const sketch = (p) => {
-      const svgWidth = 400;
-      const svgHeight = 400;
+      const svgWidth = 300;
+      const svgHeight = 300;
       p.setup = () => {
         p.createCanvas(svgWidth, svgHeight).parent(canvasRef.current);
 
@@ -184,6 +190,9 @@ function Artwork({ bgImage, setBgImage }) {
     localStorage.setItem("gridSize", newValue); // Save gridSize
 
     setGridSize(newValue);
+    setMaxSegmentAmount(Math.floor(newValue*newValue*0.5+newValue))
+    setNumStrokes(Math.min(numStrokes, Math.floor(newValue*newValue*0.5+newValue)));
+
   };
 
   const handleNumStrokesChange = (event, newValue) => {
@@ -220,37 +229,39 @@ function Artwork({ bgImage, setBgImage }) {
       <Box
         sx={{ display: "flex", flexDirection: "column", alignItems: "center" }}
       >
-        <Box sx={{ width: 400 }}>
-          <div ref={canvasRef} onClick={handleDrawAndStore}>
-            <h4>Tap to Generate a new Pattern</h4>
+        <Box sx={{ width: 300}}>
+
+          <div ref={canvasRef} onClick={handleDrawAndStore} className="canvas">
+          <Typography variant="p" align="right" > Tap to Generate a new Pattern</Typography>
+
           </div>
         </Box>
         <Box sx={{ width: 300 }}>
-          <Slider
-            aria-label="numStrokes"
-            defaultValue={numStrokes}
-            valueLabelDisplay="on"
-            step={1}
-            marks
-            min={2}
-            max={12}
-            onChange={handleNumStrokesChange}
-          />
-          <Typography>Stroke Amount: {numStrokes}</Typography>
-        </Box>
-
-        <Box sx={{ width: 300 }}>
+          <Typography>Matrix Grid Size: {gridSize}x{gridSize}</Typography>
           <Slider
             aria-label="gridSize"
             defaultValue={gridSize}
-            valueLabelDisplay="on"
+            valueLabelDisplay="off"
             step={1}
             marks
-            min={4}
-            max={10}
+            min={2}
+            max={6}
             onChange={handleGridSizeChange}
           />
-          <Typography>Matrix Grid Size: {gridSize}x{gridSize}</Typography>
+        </Box>
+
+        <Box sx={{ width: 300 }}>
+          <Typography>Segment Amount: {numStrokes}</Typography>
+          <Slider
+            aria-label="numStrokes"
+            defaultValue={numStrokes}
+            valueLabelDisplay="off"
+            step={1}
+            marks
+            min={2}
+            max={maxSegmentAmount}
+            onChange={handleNumStrokesChange}
+          />
         </Box>
 
         <Box sx={{ width: 300, mt: "2rem" }}>

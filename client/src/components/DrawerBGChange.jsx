@@ -31,7 +31,7 @@ export default function DrawerBGChange({ bgImage, setBgImage }) {
         onClick={toggleDrawer(true)}
         sx={{ position: "absolute", top: "5rem", right: "0" }}
       >
-        change background
+        background pattern
       </Button>
       <Drawer
         anchor={"right"}
@@ -41,7 +41,10 @@ export default function DrawerBGChange({ bgImage, setBgImage }) {
       >
         <Box
           sx={{
-            width: 400,
+            width: {
+               sm: "400px", // 400px wide on screens wider than 600px (md)
+              xs: "100vw", // Fullscreen on small screens
+            },
             zIndex: 1000,
             marginTop: "4.5rem",
             display: "flex",
