@@ -1,21 +1,29 @@
 const mongoose = require("mongoose");
 
 const blogSchema = new mongoose.Schema({
+  titleImage: {
+    type: String,
+    required: true,
+    default:"" 
+   },
+   
   title: {
     type: String,
     required: true,
     max: 300,
   },
+  subtitle: {
+    type: String,
+    required: true,
+    max: 300,
+  },
+
   content: {
     type: String,
     required: true,
     max: 50000,
   },
-  image: {
-     type: String,
-     required: true,
-     default:"" 
-    },
+  
   author: {
     type: mongoose.Schema.Types.ObjectId,
     required: true,
@@ -29,13 +37,14 @@ const blogSchema = new mongoose.Schema({
     type:Boolean,
     default: false,
   },
+  
+  tags:{
+    type: Array,
+     default: ["blog"]
+  },
   comments: { 
     type: Array ,
     default: []
-  },
-  tags:{
-    type: Array,
-     default: "blog"
   }
 });
 
