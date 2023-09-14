@@ -11,15 +11,15 @@ cloudinary.config({
 
 const cloudinaryUpload = async (req, res, next) => {
   try {
-    const { file } = req;
+    const  filepath  = req.file.path;
     const result = await cloudinary.v2.uploader.unsigned_upload(
-      file.path, upload_preset = "profile_pictures", 
-        );
-    // console.log(result, "is the result");
+      filepath, upload_preset = "khtxqf9d");
 
-    result.localPath = file.path;
-    req.file = result;
+      console.log(result, "is the result");
+        
+        result.localPath = filepath;
 
+        req.file = result;
     next();
   } catch (err) {
     console.log(err);

@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 
 const blogSchema = new mongoose.Schema({
-  titleImage: {
+  blogImage: {
     type: String,
     required: true,
     default:"" 
