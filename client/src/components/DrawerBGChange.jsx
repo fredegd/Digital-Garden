@@ -16,12 +16,12 @@ export default function DrawerBGChange({ bgImage, setBgImage, open, setOpen }) {
   };
 
   return (
-    <div>
       <Drawer
         anchor={"right"}
         open={open}
         onClose={toggleDrawer(false)}
         variant="persistent"
+        style={{ zIndex: "1000" }}
       >
         <Box
           sx={{
@@ -48,6 +48,5 @@ export default function DrawerBGChange({ bgImage, setBgImage, open, setOpen }) {
           <Artwork bgImage={bgImage} setBgImage={setBgImage} />
         </Box>
       </Drawer>
-    </div>
   );
 }

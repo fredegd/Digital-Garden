@@ -9,6 +9,7 @@ import Contact from "./components/Contact";
 import Login from "./components/Login";
 import LogoutMessage from "./components/LogoutMessage";
 import DrawerBGChange from "./components//DrawerBGChange";
+import Kaleidoscope from "./components/Kaleidoscope";
 
 import Protected from "./components/Protected";
 import CreateBlogEntry from "./components/CreateBlogEntry";
@@ -27,35 +28,52 @@ const theme = createTheme({
       xl: 1920, // Adjust these values as needed
     },
   },
+  // palette:{
+  //   background: {
+  //     paper: '#f1f1f1',
+  //     dark: '#262626',
+  //   },
+  //   text: {
+  //     primary: '#173A5E',
+  //     secondary: '#46505A',
+  //   },
+  //   action: {
+  //     active: '#001E3C',
+  //   },
+  //   success: {
+  //     dark: '#009688',
+  //   },
+  // }
 });
 
 export default function App() {
   const [open, setOpen] = useState(false);
- 
+
   const [bgImage, setBgImage] = useState();
 
   return (
     <>
       <ThemeProvider theme={theme}>
-      <Navbar setOpen={setOpen} />
-      <div style={{ zIndex: "1000" }}>
+        <Navbar setOpen={setOpen} />
         <DrawerBGChange
           bgImage={bgImage}
           setBgImage={setBgImage}
           open={open}
           setOpen={setOpen}
         />{" "}
-      </div>
+        <Kaleidoscope bgImage={bgImage} />
+        
         <Routes>
-          <Route path="/projects" element={<Projects />}></Route>
-          <Route path="/blog" element={<Blog />}></Route>
-          <Route path="/about" element={<About />}></Route>
-          <Route path="/login" element={<Login />}></Route>
-          <Route path="/logout" element={<LogoutMessage />}></Route>
-          <Route path="/contact" element={<Contact />}></Route>
+          <Route path="/projects" element={<Projects />} />
+          <Route path="/blog" element={<Blog />} />
+          <Route path="/about" element={<About />} />
+          <Route path="/contact" element={<Contact />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/logout" element={<LogoutMessage />} />
 
-          <Route path="/" element={<Landing open={open} setOpen={setOpen} bgImage={bgImage}/>}></Route>
-          <Route path="/:userid" element={<Protected/>}>
+          <Route path="/" element={<Landing />} />
+
+          <Route path="/:userid" element={<Protected />}>
             <Route path="create-blog" element={<CreateBlogEntry />} />
             <Route path="dashboard" element={<Dashboard />} />
           </Route>

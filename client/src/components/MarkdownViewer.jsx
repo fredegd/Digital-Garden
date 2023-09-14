@@ -22,8 +22,8 @@ function MarkdownViewer({ filePath }) {
   }, [filePath]);
 
   return (
-    <div className="markdown-viewer">
-      <ReactMarkdown>{markdownContent}</ReactMarkdown>
+    <div className="markdown-viewer"  >
+      <ReactMarkdown style={{ zIndex: "100" }}>{markdownContent}</ReactMarkdown>
     </div>
   );
 }

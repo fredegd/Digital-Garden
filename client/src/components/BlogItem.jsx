@@ -1,12 +1,7 @@
-import React from 'react'
-import MarkdownViewer from './MarkdownViewer';
-
+import React from "react";
+import MarkdownViewer from "./MarkdownViewer";
+import { Box } from "@mui/material";
 
 export default function BlogItem() {
-    return (
-        <div className="blog">
-          Converted:
-          <MarkdownViewer filePath={"./src/assets/form-data.md"} />
-        </div>
-      );
+  return <MarkdownViewer filePath={"./src/assets/form-data.md"} />;
 }
