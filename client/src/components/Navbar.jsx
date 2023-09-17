@@ -1,6 +1,7 @@
 import React from "react";
 import { useState } from "react";
-import PropTypes from "prop-types";
+import { useDarkMode } from '../context/DarkModeContext';
+
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
 import CssBaseline from "@mui/material/CssBaseline";
@@ -13,15 +14,20 @@ import ListItem from "@mui/material/ListItem";
 
 import MenuIcon from "@mui/icons-material/Menu";
 import WallpaperIcon from "@mui/icons-material/Wallpaper";
+import LightModeIcon from '@mui/icons-material/LightMode';
+import DarkModeIcon from '@mui/icons-material/DarkMode';
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
 import { navItems } from "../navItems";
 import { cols } from "../colorSchema";
 
+
 // const drawerWidth = 240;
 
 export default function Navbar({ window, setOpen }) {
+
+  const { dk, toggleDarkMode } = useDarkMode();
   // const { window } = props;
   const [mobileOpen, setMobileOpen] = useState(false);
 
@@ -31,6 +37,10 @@ export default function Navbar({ window, setOpen }) {
 
   const handleDrawerBgChange = () => {
     setOpen((prevState) => !prevState);
+  };
+
+  const handleDarkChange = () => {
+    toggleDarkMode();
   };
 
   const drawer = (
@@ -94,6 +104,10 @@ export default function Navbar({ window, setOpen }) {
 
           <div onClick={handleDrawerBgChange}>
             <WallpaperIcon />
+          </div>
+
+          <div onClick={handleDarkChange}>
+            {dk?<DarkModeIcon />:<LightModeIcon />}
           </div>
 
         </Toolbar>

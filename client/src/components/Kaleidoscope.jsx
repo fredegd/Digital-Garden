@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 
 export default function Kaleidoscope(bgImage) {
+  // console.log(bgImage.bgImage)
   // State variables to store mouse positions
   const [mouseX, setMouseX] = useState(0);
   const [mouseY, setMouseY] = useState(0);
@@ -11,7 +12,7 @@ export default function Kaleidoscope(bgImage) {
   const calculateGridSize = () => {
     const newNumRows = window.innerHeight > window.innerWidth ? 11 : 7;
     const newNumCols = window.innerHeight > window.innerWidth ? 7 : 11;
-    console.log(newNumRows, newNumCols);
+    // console.log(newNumRows, newNumCols);
     return { numRows: newNumRows, numCols: newNumCols };
   };
 
