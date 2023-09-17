@@ -129,18 +129,11 @@ function Artwork({ bgImage, setBgImage }) {
     bgImage ? extractStrokesFromSVG() : drawStrokes()
   );
 
-  // useEffect(() => {
-
-  //   setStrokesString(bgImage?extractStrokesFromSVG():drawStrokes());
-  //   console.log("new setStrokesString", strokesString);
-  // }, [dk, bgImage]);//temporarily commented out
-
-  //
-  //
+  
 
   useEffect(() => {
     setBgColor(theme.palette.background.default);
-    localStorage.setItem("bgColor", theme.palette.background.default); // Save bgColor
+    // localStorage.setItem("bgColor", theme.palette.background.default); // Save bgColor
     setBgString(
       `<rect width="${svgWidth}" height="${svgHeight}" fill="${theme.palette.background.default}"/>`
     );
@@ -152,7 +145,7 @@ function Artwork({ bgImage, setBgImage }) {
       startString + bgString + strokesString + endString
     );
 
-    console.log("new setBgImage, including", strokesString);
+    // console.log("new setBgImage, including", strokesString);
   }, [dk, theme.palette.background.default]);
 
   useEffect(() => {
@@ -160,7 +153,7 @@ function Artwork({ bgImage, setBgImage }) {
 
     if (svgData) {
       setBgImage(svgData);
-      console.log("svgData was read from LS", svgData);
+      // console.log("svgData was read from LS", svgData);
     } else {
       console.log("no svgData");
       handleDrawAndStore();

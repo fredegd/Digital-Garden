@@ -7,9 +7,7 @@ export function useDarkMode() {
 }
 
 export default function DarkModeProvider({ children }) {
-
-  const [dk, setDk] = useState(localStorage.getItem('dk') == 'true');// if dk from localstorage exists, use it, otherwise use false
-  // const [dk, setDk] = useState(false);// testing
+  const [dk, setDk] = useState(localStorage.getItem('dk') === 'true'?true:false);
   const toggleDarkMode = () => {
     const newDk = !dk;
     localStorage.setItem('dk', newDk);

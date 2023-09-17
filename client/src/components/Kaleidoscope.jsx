@@ -54,7 +54,7 @@ export default function Kaleidoscope(bgImage) {
           bgImage.bgImage
         )})`;
         square.style.backgroundPosition = "center";
-        // square.style.transition= "all 0.5s ease-out";
+        // square.style.transition= "1.5s ease-out";//commented out temporarily
         square.style.opacity = "0.3";
 
       });
