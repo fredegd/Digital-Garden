@@ -1,7 +1,6 @@
 import { useState, useEffect } from "react";
 
 export default function Kaleidoscope(bgImage) {
-  // console.log(bgImage.bgImage)
   // State variables to store mouse positions
   const [mouseX, setMouseX] = useState(0);
   const [mouseY, setMouseY] = useState(0);
@@ -55,7 +54,7 @@ export default function Kaleidoscope(bgImage) {
           bgImage.bgImage
         )})`;
         square.style.backgroundPosition = "center";
-        square.style.transition= "all 0.8s ease-in-out";
+        // square.style.transition= "all 0.5s ease-out";
         square.style.opacity = "0.3";
 
       });

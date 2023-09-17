@@ -8,15 +8,15 @@ import "./Artwork-styles.css";
 import { themeManager } from "../theme";
 import { useDarkMode } from "../context/DarkModeContext.jsx";
 
-// console.log(theme);
-
-const getRandomHexColor = () => {
+const getRandomHexColor = (colName) => {
+  console.log("hallo");
   const hexChars = "0123456789abcdef";
   let color = "#";
   for (let i = 0; i < 6; i++) {
     const randomIndex = Math.floor(Math.random() * hexChars.length);
     color += hexChars[randomIndex];
   }
+  localStorage.setItem(colName, color);
   return color;
 };
 
@@ -26,54 +26,10 @@ const startString = `<svg xmlns="http://www.w3.org/2000/svg" width="${svgWidth}"
 const endString = "</svg>";
 
 function Artwork({ bgImage, setBgImage }) {
+  console.log(bgImage);
   const { dk } = useDarkMode();
 
   const theme = themeManager(dk);
-  const canvasRef = useRef(null);
-  const p5CanvasRef = useRef(null); // Declare p5CanvasRef here
-
-  const [strokesString, setStrokesString] = useState();
-
-  // const strStringValue = () => {
-
-  //   const extractStrokesFromSVG = () => {
-
-  //     const regex = /<line [^>]*\/>/g;
-
-  //     if (!bgImage) return;
-  //     const matches = bgImage.match(regex);
-
-  //     if (matches) {
-  //       const matchesString = matches.join("");
-  //       setStrokesString(matchesString);
-  //       console.log("matchesString", matchesString);
-
-  //     }else return
-  //   };
-
-  //   return extractStrokesFromSVG();
-  // }
-  // console.log(strStringValue);
-
-  // useEffect(() => {
-  //   const extractStrokesFromSVG = () => {
-  //     const pg = bgImage;
-
-  //     console.log("bg Image is already here",bgImage)
-  //     const regex = /<line [^>]*\/>/g;
-
-  //     const matches = pg.match(regex);
-
-  //     if (matches) {
-  //       const matchesString = matches.join("");
-  //       setStrokesString(matchesString);
-  //       console.log("matchesString", matchesString);
-
-  //     }
-  //   };
-
-  //   bgImage && extractStrokesFromSVG();
-  // }, [dk, bgImage]);
 
   //bg color according to the theme dark or light
   const [bgColor, setBgColor] = useState(theme.palette.background.default);
@@ -89,49 +45,47 @@ function Artwork({ bgImage, setBgImage }) {
       : 4
   );
   // Initial segmentsAmount
-  const [segmentsAmount, setNumStrokes] = useState(
+  const [segmentsAmount, setSegmentAmount] = useState(
     localStorage.getItem("segmentsAmount")
       ? parseInt(localStorage.getItem("segmentsAmount"))
       : 7
   );
 
   const [maxSegmentAmount, setMaxSegmentAmount] = useState(
-    Math.floor(gridSize * gridSize * 0.5)
+    gridSize > 2 ? Math.floor(gridSize * gridSize * 0.5) + gridSize : 2
   );
 
   const [color1, setColor1] = useState(
     localStorage.getItem("col1")
       ? localStorage.getItem("col1")
-      : getRandomHexColor()
+      : getRandomHexColor("col1")
   );
   const [color2, setColor2] = useState(
     localStorage.getItem("col2")
       ? localStorage.getItem("col2")
-      : getRandomHexColor()
+      : getRandomHexColor("col2")
   );
 
-  //
-  //
-
-  useEffect(() => {
-    setBgColor(theme.palette.background.default);
-    localStorage.setItem("bgColor", theme.palette.background.default); // Save bgColor
-    setBgString(
-      `<rect width="${svgWidth}" height="${svgHeight}" fill="${theme.palette.background.default}"/>`
-    );
-    console.log(strokesString);
-    setBgImage(startString + bgString + strokesString + endString);
-
-    // localStorage.setItem("svgData",  startString + bgString + strokesString + endString
-    // );//temporarily commented out
-
-    console.log("new setBgImage, including", strokesString);
-  }, [dk, theme.palette.background.default]);
+  const extractStrokesFromSVG = () => {
+    const regex = /<line [^>]*\/>/g;
+    if (bgImage) {
+      console.log("bgImage passed to extractStrokesFromSVG");
+      const matches = bgImage.match(regex);
+      if (matches) {
+        const strokes = matches.join("");
+        console.log("match!");
+        return strokes;
+      }
+    } else {
+      console.log("no bgImage");
+    }
+  };
 
   //if no bgImage in local storage, draw once and store on local storage
 
   const drawStrokes = () => {
     const pointSize = svgWidth / gridSize;
+
     let tempString = "";
     for (let i = 0; i < 2; i++) {
       const col = i % 2 === 0 ? color1 : color2;
@@ -166,68 +120,47 @@ function Artwork({ bgImage, setBgImage }) {
         tempString += `<line x1="${startX}" y1="${startY}" x2="${endX}" y2="${endY}" stroke="${col}" stroke-width="${sw}" stroke-linecap="round"/>`;
       }
     }
-    setStrokesString(tempString);
+
+    console.log(tempString);
     return tempString;
   };
 
+  const [strokesString, setStrokesString] = useState(
+    bgImage ? extractStrokesFromSVG() : drawStrokes()
+  );
+
   // useEffect(() => {
-  //   const sketch = (p) => {
-  //     p.setup = () => {
-  //       p.createCanvas(svgWidth, svgHeight).parent(canvasRef.current);
 
-  //       // Load and parse the SVG string
-  //       const svgElement = new DOMParser().parseFromString(
-  //         bgImage,
-  //         "image/svg+xml"
-  //       );
-  //       // Get all the lines from the SVG
-  //       const svgLines = svgElement.querySelectorAll("line");
+  //   setStrokesString(bgImage?extractStrokesFromSVG():drawStrokes());
+  //   console.log("new setStrokesString", strokesString);
+  // }, [dk, bgImage]);//temporarily commented out
 
-  //       p.background(bgColor); // here we call the background function whereas the svg data contains a rect element with a fill attribute
+  //
+  //
 
-  //       // Loop through each line in the SVG and draw it onto the canvas
-  //       svgLines.forEach((line) => {
-  //         const x1 = parseFloat(line.getAttribute("x1"));
-  //         const y1 = parseFloat(line.getAttribute("y1"));
-  //         const x2 = parseFloat(line.getAttribute("x2"));
-  //         const y2 = parseFloat(line.getAttribute("y2"));
-  //         const stroke = line.getAttribute("stroke");
-  //         const strokeWidth = parseFloat(line.getAttribute("stroke-width"));
-  //         p.stroke(stroke);
-  //         p.strokeWeight(strokeWidth);
-  //         p.strokeCap(p.ROUND);
-  //         p.line(x1, y1, x2, y2);
-  //       });
-  //     };
+  useEffect(() => {
+    setBgColor(theme.palette.background.default);
+    localStorage.setItem("bgColor", theme.palette.background.default); // Save bgColor
+    setBgString(
+      `<rect width="${svgWidth}" height="${svgHeight}" fill="${theme.palette.background.default}"/>`
+    );
+    // console.log(strokesString);
+    setBgImage(startString + bgString + strokesString + endString);
 
-  //     // const drawArtwork = () => {
-  //     //   console.log(bgString);
-  //     //   let svgString = startString + bgString + drawStrokes() + endString;
-  //     //   console.log("RATATA", svgString);
-  //     //   saveSVGLocally(svgString);
-  //     //   setBgImage(svgString);
-  //     //   // p.setup();
-  //     // };
+    localStorage.setItem(
+      "svgData",
+      startString + bgString + strokesString + endString
+    );
 
-  //     // p.drawAndStoreLocal = () => {
-  //     //   drawArtwork(p);
-  //     // };
-  //   };
-
-  //   const p5Canvas = new p5(sketch, canvasRef.current);
-  //   p5CanvasRef.current = p5Canvas;
-
-  //   return () => {
-  //     p5Canvas.remove();
-  //   };
-  // }, [gridSize, segmentsAmount, color1, color2, bgColor, bgImage, dk]);
+    console.log("new setBgImage, including", strokesString);
+  }, [dk, theme.palette.background.default]);
 
   useEffect(() => {
     const svgData = localStorage.getItem("svgData");
 
     if (svgData) {
       setBgImage(svgData);
-      console.log("svgData was setfrom LS", svgData);
+      console.log("svgData was read from LS", svgData);
     } else {
       console.log("no svgData");
       handleDrawAndStore();
@@ -255,18 +188,12 @@ function Artwork({ bgImage, setBgImage }) {
     }
   };
 
-  const drawArtwork = () => {
+  const handleDrawAndStore = () => {
     console.log(bgString);
     let svgString = startString + bgString + drawStrokes() + endString;
     console.log("RATATA", svgString);
     saveSVGLocally(svgString);
     setBgImage(svgString);
-    // p.setup();
-  };
-
-  const handleDrawAndStore = () => {
-    drawArtwork();
-    // p5CanvasRef.current.drawAndStoreLocal();
   };
 
   const handleGridSizeChange = (event, newValue) => {
@@ -276,14 +203,19 @@ function Artwork({ bgImage, setBgImage }) {
     setMaxSegmentAmount(
       newValue > 2 ? Math.floor(newValue * newValue * 0.5 + newValue) : 2
     );
-    setNumStrokes(Math.floor(newValue * newValue * 0.5));
-    localStorage.setItem("segmentsAmount", newValue); // Save segmentsAmount
+    const newAmountOfStrokes = Math.min(
+      newValue > 2 ? Math.floor(newValue * newValue * 0.5 + newValue) : 2,
+      segmentsAmount
+    );
+    console.log(newAmountOfStrokes);
+
+    setSegmentAmount(newAmountOfStrokes);
+    localStorage.setItem("segmentsAmount", newAmountOfStrokes); // Save segmentsAmount
   };
 
   const handleNumStrokesChange = (event, newValue) => {
+    setSegmentAmount(newValue);
     localStorage.setItem("segmentsAmount", newValue); // Save segmentsAmount
-
-    setNumStrokes(newValue);
   };
 
   const handleHardSave = () => {
@@ -320,11 +252,17 @@ function Artwork({ bgImage, setBgImage }) {
         }}
       >
         <Box sx={{ width: 300 }}>
-          <div ref={canvasRef} onClick={handleDrawAndStore} className="canvas">
+          {/* <div ref={canvasRef} onClick={handleDrawAndStore} className="canvas"> */}
+          <div onClick={handleDrawAndStore} className="canvas">
             <Typography variant="p" align="right">
               {" "}
               Tap to Generate a new Pattern
             </Typography>
+            {/* an element displaying the content of bgImage */}
+            <div
+              dangerouslySetInnerHTML={{ __html: bgImage }}
+              style={{ width: "125px" }}
+            ></div>
           </div>
         </Box>
         <Box sx={{ width: 250 }}>
@@ -333,8 +271,8 @@ function Artwork({ bgImage, setBgImage }) {
           </Typography>
           <Slider
             aria-label="gridSize"
-            defaultValue={gridSize}
-            valueLabelDisplay="off"
+            value={gridSize}
+            valueLabelDisplay="auto"
             step={1}
             marks
             min={2}
@@ -347,8 +285,8 @@ function Artwork({ bgImage, setBgImage }) {
           <Typography>Segment Amount: {segmentsAmount}</Typography>
           <Slider
             aria-label="segmentsAmount"
-            defaultValue={segmentsAmount}
-            valueLabelDisplay="off"
+            value={segmentsAmount}
+            valueLabelDisplay="auto"
             step={1}
             marks
             min={2}
@@ -377,11 +315,6 @@ function Artwork({ bgImage, setBgImage }) {
           <Button onClick={handleHardSave} style={{ width: "125px" }}>
             save SVG
           </Button>
-          {/* an element displaying the content of bgImage */}
-          {/* <div
-            dangerouslySetInnerHTML={{ __html: bgImage }}
-            style={{ width: "125px" }}
-          ></div> */}
         </Box>
       </Box>
     </div>

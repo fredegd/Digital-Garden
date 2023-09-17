@@ -29,7 +29,7 @@ export default function App() {
   const theme = themeManager(dk);
   const [open, setOpen] = useState(false);
 
-  const [bgImage, setBgImage] = useState(localStorage.getItem("svgData")&&localStorage.getItem("svgData"));
+  const [bgImage, setBgImage] = useState(localStorage.getItem("svgData")?localStorage.getItem("svgData"):null);
 
   return (
     <>
