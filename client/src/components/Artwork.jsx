@@ -5,9 +5,8 @@ import Slider from "@mui/material/Slider";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import "./Artwork-styles.css";
-import { themeManager } from "../theme";
 import { useDarkMode } from "../context/DarkModeContext.jsx";
-
+import { useTheme } from '@mui/material/styles';
 const getRandomHexColor = (colName) => {
   console.log("hallo");
   const hexChars = "0123456789abcdef";
@@ -26,13 +25,15 @@ const startString = `<svg xmlns="http://www.w3.org/2000/svg" width="${svgWidth}"
 const endString = "</svg>";
 
 function Artwork({ bgImage, setBgImage }) {
-  console.log(bgImage);
-  const { dk } = useDarkMode();
+  const theme = useTheme();
+  // console.log(bgImage);
+  const dk = useDarkMode();
+  // const theme = themeManager(dk);
+  // console.log(theme.palette.mode);
 
-  const theme = themeManager(dk);
 
   //bg color according to the theme dark or light
-  const [bgColor, setBgColor] = useState(theme.palette.background.default);
+  const [bgColor, setBgColor] = useState(theme.palette.background.main);
   //
   const [bgString, setBgString] = useState(
     `<rect width="${svgWidth}" height="${svgHeight}" fill="${bgColor}"/>`
@@ -69,11 +70,11 @@ function Artwork({ bgImage, setBgImage }) {
   const extractStrokesFromSVG = () => {
     const regex = /<line [^>]*\/>/g;
     if (bgImage) {
-      console.log("bgImage passed to extractStrokesFromSVG");
+      // console.log("bgImage passed to extractStrokesFromSVG");
       const matches = bgImage.match(regex);
       if (matches) {
         const strokes = matches.join("");
-        console.log("match!");
+        // console.log("match!");
         return strokes;
       }
     } else {
@@ -128,14 +129,11 @@ function Artwork({ bgImage, setBgImage }) {
   const [strokesString, setStrokesString] = useState(
     bgImage ? extractStrokesFromSVG() : drawStrokes()
   );
-
-  
-
   useEffect(() => {
-    setBgColor(theme.palette.background.default);
-    // localStorage.setItem("bgColor", theme.palette.background.default); // Save bgColor
+    setBgColor(theme.palette.background.main);
+    // localStorage.setItem("bgColor", theme.palette.background.main); // Save bgColor
     setBgString(
-      `<rect width="${svgWidth}" height="${svgHeight}" fill="${theme.palette.background.default}"/>`
+      `<rect width="${svgWidth}" height="${svgHeight}" fill="${theme.palette.background.main}"/>`
     );
     // console.log(strokesString);
     setBgImage(startString + bgString + strokesString + endString);
@@ -146,7 +144,7 @@ function Artwork({ bgImage, setBgImage }) {
     );
 
     // console.log("new setBgImage, including", strokesString);
-  }, [dk, theme.palette.background.default]);
+  }, [dk, theme.palette.background.main]);
 
   useEffect(() => {
     const svgData = localStorage.getItem("svgData");

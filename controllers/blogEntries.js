@@ -22,7 +22,7 @@ const getBlog = async (req, res) => {
 
 const createBlog = async (req, res) => {
   try {
-    console.log("Request Body:", req.body);
+    console.log("Request Body:", req.body, "Request File:", req.file);
     const blogImage = req.file.secure_url;
     const { title, subtitle, content, author } = req.body;
 

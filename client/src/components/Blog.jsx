@@ -10,7 +10,7 @@ export default function Blog() {
         alignItems: "center",
         minHeight: "100vh",
         overflow: "scroll",
-        zIndex: "1000",
+        // zIndex: "1000",
         background: "transparent",
 
       }}

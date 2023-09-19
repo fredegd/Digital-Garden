@@ -21,13 +21,13 @@ import DarkModeProvider from "./context/DarkModeContext";
 import { ThemeProvider } from "@mui/material/styles";
 import CssBaseline from "@mui/material/CssBaseline";
 
-import { themeManager } from "./theme";
+import  {themeManager}  from "./theme";
 import { useDarkMode } from "./context/DarkModeContext.jsx";
 
 export default function App() {
   const { dk } = useDarkMode();
   const theme = themeManager(dk);
-  const [open, setOpen] = useState(false);
+  const [open, setOpen] = useState(false);//a state to control the drawer
 
   const [bgImage, setBgImage] = useState(localStorage.getItem("svgData")?localStorage.getItem("svgData"):null);
 

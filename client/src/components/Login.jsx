@@ -1,9 +1,8 @@
 import { useForm } from "react-hook-form";
 import { Link, Navigate, useNavigate } from "react-router-dom";
-
+import { Box } from "@mui/material";
 import { useContext } from "react";
 import { AuthContext } from "../context/AuthProvider";
-import { cols } from "../colorSchema";
 
 export default function Login() {
   const {
@@ -14,7 +13,7 @@ export default function Login() {
   } = useForm();
 
   const { isLoading, author, login } = useContext(AuthContext);
-  console.log(author,isLoading);
+  console.log(author, "author", isLoading, "isLoading");
   const navigate = useNavigate();
 
   const onSubmit = (data) => {
@@ -22,60 +21,36 @@ export default function Login() {
 
     reset();
   };
-  
 
-  if (!isLoading && author) {
+  if (!isLoading && author !== null) {
     return <Navigate to={`../${author.username}/create-blog`} />;
   }
 
   if (!isLoading && !author) {
     return (
-      <div
-        className="d-flex justify-content-center align-items-center vh-100 "
-        style={{
-          backgroundColor: cols.secondary,
-          color: cols.main,
-          // paddingTop: "-2rem",
+      <Box
+        sx={{
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          justifyContent: "center",
+
         }}
       >
-        <div
-          className="col-lg-6 col-md-8 col-sm-9 col-10 container-fluid  p-5 rounded-4 fs-5"
-          style={{ backgroundColor: cols.secondary, color: cols.main }}
-        >
-          <Form onSubmit={handleSubmit(onSubmit)}>
-            <h3 className="text-center">Sign In</h3>
-            <Form.Group controlId="email">
-              <Form.Label>Email</Form.Label>
-              <Form.Control
-                type="email"
-                placeholder="Enter email"
-                {...register("email", { required: "Email is required" })}
-              />
-            </Form.Group>
+        <Box sx={{zIndex:"1000"}}>
+          <form onSubmit={handleSubmit(onSubmit)}>
+            {/* register your input into the hook by invoking the "register" function */}
+            <input defaultValue="your@email.com" {...register("email")} />
 
-            <Form.Group controlId="password" className="mb-3">
-              <Form.Label>Password</Form.Label>
-              <Form.Control
-                type="password"
-                placeholder="Enter password"
-                {...register("password", { required: "Password is required" })}
-              />
-            </Form.Group>
+            {/* include validation with required or other standard HTML validation rules */}
+            <input {...register("password", { required: true })} />
+            {/* errors will return when field validation fails  */}
+            {errors.password && <span>This field is required</span>}
 
-            <Form.Group controlId="rememberMe" className="mb-3">
-              <Form.Check
-                type="checkbox"
-                label="Remember Me"
-                {...register("rememberMe")}
-              />
-            </Form.Group>
-
-            <Button variant="primary" type="submit">
-              Login
-            </Button>
-          </Form>
-        </div>
-      </div>
+            <input type="submit" />
+          </form>
+        </Box>
+      </Box>
     );
   }
 }

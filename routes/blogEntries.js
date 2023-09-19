@@ -10,7 +10,7 @@ const { authorize } = require("../middlewares/authorize");
 
 const blogsRouter = express.Router();
 
-blogsRouter.post('/create',upload.single('blogImage'), cloudinaryUpload,  createBlog);
+blogsRouter.post('/create', upload.single('blogImage'), cloudinaryUpload,  createBlog);
 
 blogsRouter.get('/read', getBlogs);
 blogsRouter.get('/read/:id', getBlog);

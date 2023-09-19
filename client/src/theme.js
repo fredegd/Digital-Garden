@@ -1,11 +1,13 @@
 import { createTheme } from "@mui/material/styles";
 
 export const themeManager = (darkMode) => {
+  console.log(darkMode)
   const darkPalette = {
     mode: 'dark',
     background: {
-      main: '#ABCFEF',
+      main: '#121212',
       secondary: '#000000', // You can customize these values
+      transparent: '#303030cc',
     },
     text: {
       primary: '#FFFFFF',
@@ -24,6 +26,8 @@ export const themeManager = (darkMode) => {
     background: {
       main: '#f1f1f1',
       secondary: '#FFFFFF', // You can customize these values
+      transparent: '#f2f2f2cc',
+
     },
     text: {
       primary: '#173A5E',
