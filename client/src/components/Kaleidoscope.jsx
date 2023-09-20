@@ -147,5 +147,13 @@ export default function Kaleidoscope(bgImage) {
     );
   }
 
-  return <div className="gridContainer" id="gridContainer" style={{zIndex:"-10"}}></div>;
+  return (
+    <>
+    <div style={{zIndex:"-1000"}}>
+    <div className="gridContainer" id="gridContainer" style={{zIndex:"-1000"}}></div>
+
+    </div>
+    
+    </>
+  )
 }

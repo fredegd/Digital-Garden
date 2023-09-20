@@ -1,49 +1,57 @@
 import { Box } from "@mui/system";
-import { keyframes } from '@mui/system';
+import useTheme from "@mui/material/styles/useTheme";
+import { motion, useAnimation } from "framer-motion";
 
-
+import { Typography } from "@mui/material";
+import { Link } from "react-router-dom";
 
 export default function BlogPreview() {
-  const slideIn = keyframes`
-    0% {
-      transform: translateY(25%);
-      opacity: 0;
-    }
-    100% {
-      transform: translateY(0);
-      opacity: 1;
-    }
-  `;
-
-
+  const theme = useTheme();
 
   return (
-    
     <Box
-          sx={{
-            fontFamily: "IBM Plex Mono, sans-serif",
-            fontSize: {xs: "1.2rem", sm: "1.5rem", md: "1.8rem", lg: "2.1rem", xl: "2.4rem"},
-            // position: "relative",
-            backgroundSize: "cover",
-            minHeight: "100vh",
-            display: "flex",
-            flexDirection: "column",
-            justifyContent: "center",
-            width: {xs: "100%", sm: "100%", md: "100%", lg: "100%", xl: "100%"},
-            overflow: "scroll",
-             animation: `${slideIn} 0.7s ease-out 0s 1  `, 
+      sx={{
+        fontFamily: "IBM Plex Mono, sans-serif",
+        fontSize: {
+          xs: "1.2rem",
+          sm: "1.5rem",
+          md: "1.8rem",
+          lg: "2.1rem",
+          xl: "2.4rem",
+        },
+        // position: "relative",
+        backgroundSize: "cover",
+        minHeight: "100vh",
+        display: "flex",
+        flexDirection: "column",
+        justifyContent: "center",
+        width: { xs: "100%", sm: "100%", md: "100%", lg: "100%", xl: "100%" },
+        overflow: "scroll",
+        transition: "all 0.9s ease-in-out",
+        zIndex: "100",
+        }}
+    >
+      <motion.div
+        // onClick={clicker}
+        // variants={staggerConfig}
+        // initial="animate"
+        //  animate={controls}
+        style={{backgroundColor:theme.palette.background.transparent,  margin:"5rem", borderRadius:"1rem" }}
+        whileHover={{ scale: 1.1, border: "1px solid red" }}
+        transition={{ type: "spring", stiffness: 100, damping: 10 }}
+        whileTap={{ scale: 0.9 }}
+      >
+        <Link
+          to={"/blog"}
+          style={{
+            textDecoration: "none",
+            color: theme.palette.text.primary,
             transition: "all 0.9s ease-in-out",
-            zIndex: "100",
-            border: "1px solid red",
-
           }}
         >
-
-          <h1 >
-
-        Latest from the  Blog:
-          </h1>
-
-        </Box>
-  )
+          <h1>Latest from the Blog:</h1>
+        </Link>
+      </motion.div>
+    </Box>
+  );
 }

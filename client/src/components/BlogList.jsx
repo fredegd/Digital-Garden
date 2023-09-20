@@ -1,11 +1,12 @@
 import { useEffect, useState } from "react";
-import BlogItem from "./BlogItem";
-import { Box } from "@mui/material";
+import { useTheme } from "@mui/material/styles";
+import BlogItemCard from "./BlogItemCard";
+import { Box, Grid, Typography } from "@mui/material";
 import { axiosClient } from "../axiosClient";
 
 export default function BlogList() {
   const [blogs, setBlogs] = useState([]);
-
+const theme = useTheme();
   useEffect(() => {
     axiosClient
       .get("/blog/read")
@@ -19,10 +20,21 @@ export default function BlogList() {
   }, []);
 
   return (
-    <Box sx={{ zIndex: "100", maxWidth: " 800px" }}>
-      {blogs.map((blog) => {
-        return <BlogItem key={blog._id} blog={blog} />;
-      })}
+    <Box sx={{ zIndex: "100", width: "100%"}}>
+      <Box>
+        <Typography variant="h1">BLOG</Typography>
+      </Box>
+      <Grid container spacing={6}>
+        {blogs.map((blog) => (
+          <Grid item xs={12} sm={6} md={4} key={blog._id}>
+            
+             
+                <BlogItemCard blog={blog} />
+
+
+          </Grid>
+        ))}
+      </Grid>
     </Box>
   );
 }

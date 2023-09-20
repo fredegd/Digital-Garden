@@ -5,6 +5,7 @@ import Navbar from "./components/Navbar";
 import Projects from "./components/Projects";
 import About from "./components/About";
 import Blog from "./components/Blog";
+import BlogItem from "./components/BlogItem";
 import Contact from "./components/Contact";
 import Login from "./components/Login";
 import LogoutMessage from "./components/LogoutMessage";
@@ -46,6 +47,7 @@ export default function App() {
           <Routes>
             <Route path="/projects" element={<Projects />} />
             <Route path="/blog" element={<Blog />} />
+            <Route path="/blog/read/:blogItemid" element={<BlogItem />} />
             <Route path="/about" element={<About />} />
             <Route path="/contact" element={<Contact />} />
             <Route path="/login" element={<Login />} />

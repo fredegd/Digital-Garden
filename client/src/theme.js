@@ -6,7 +6,7 @@ export const themeManager = (darkMode) => {
     mode: 'dark',
     background: {
       main: '#121212',
-      secondary: '#000000', // You can customize these values
+      secondary: '#303030', // You can customize these values
       transparent: '#303030cc',
     },
     text: {
@@ -25,7 +25,7 @@ export const themeManager = (darkMode) => {
     mode: 'light',
     background: {
       main: '#f1f1f1',
-      secondary: '#FFFFFF', // You can customize these values
+      secondary: '#f2f2f2', // You can customize these values
       transparent: '#f2f2f2cc',
 
     },

@@ -76,7 +76,7 @@ const logout = async (req, res, next) => {
 const getProfile = async (req, res, next) => {
   try {
     const userId = req.author._id;
-    console.log(userId)
+    // console.log(userId)
     const author = await Author.findOne({ userId });
     res.status(200).json(author);
   } catch (error) {
