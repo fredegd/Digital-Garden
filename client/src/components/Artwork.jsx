@@ -1,14 +1,14 @@
 import React, { useEffect, useRef, useState } from "react";
-import p5 from "p5";
 import Button from "@mui/material/Button";
 import Slider from "@mui/material/Slider";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
-import "./Artwork-styles.css";
 import { useDarkMode } from "../context/DarkModeContext.jsx";
-import { useTheme } from '@mui/material/styles';
+import { useTheme } from "@mui/material/styles";
+//
+//a function to generate Hex colors
 const getRandomHexColor = (colName) => {
-  console.log("hallo");
+  console.log("a new color was generated");
   const hexChars = "0123456789abcdef";
   let color = "#";
   for (let i = 0; i < 6; i++) {
@@ -26,11 +26,7 @@ const endString = "</svg>";
 
 function Artwork({ bgImage, setBgImage }) {
   const theme = useTheme();
-  // console.log(bgImage);
   const dk = useDarkMode();
-  // const theme = themeManager(dk);
-  // console.log(theme.palette.mode);
-
 
   //bg color according to the theme dark or light
   const [bgColor, setBgColor] = useState(theme.palette.background.main);
@@ -122,49 +118,47 @@ function Artwork({ bgImage, setBgImage }) {
       }
     }
 
-    console.log(tempString);
+    console.log("new strokesString");
     return tempString;
   };
+  const svgData = localStorage.getItem("svgData");
 
   const [strokesString, setStrokesString] = useState(
     bgImage ? extractStrokesFromSVG() : drawStrokes()
   );
+
   useEffect(() => {
+    const svgDataString =
+      startString +
+      `<rect width="${svgWidth}" height="${svgHeight}" fill="${theme.palette.background.main}"/>` +
+      strokesString +
+      endString;
+
+    localStorage.setItem("bgColor", theme.palette.background.main); // Save bgColor
     setBgColor(theme.palette.background.main);
-    // localStorage.setItem("bgColor", theme.palette.background.main); // Save bgColor
+
     setBgString(
       `<rect width="${svgWidth}" height="${svgHeight}" fill="${theme.palette.background.main}"/>`
     );
-    // console.log(strokesString);
-    setBgImage(startString + bgString + strokesString + endString);
 
-    localStorage.setItem(
-      "svgData",
-      startString + bgString + strokesString + endString
-    );
+    if (svgDataString) {
+      console.log("done");
+      localStorage.setItem("svgData", svgDataString);
+      setBgImage(svgDataString);
+    }
+  }, [dk, gridSize, segmentsAmount, color1, color2, strokesString]);
 
-    // console.log("new setBgImage, including", strokesString);
-  }, [dk, theme.palette.background.main]);
-
+  //this function checks if there is a bgImage in local storage, if not, it draws one and stores it
   useEffect(() => {
     const svgData = localStorage.getItem("svgData");
 
     if (svgData) {
       setBgImage(svgData);
       // console.log("svgData was read from LS", svgData);
-    } else {
-      console.log("no svgData");
-      handleDrawAndStore();
     }
-  }, []);
+  }, [bgImage]);
 
-  const handleColorChange = (setColor, colorKey) => {
-    const newColor = getRandomHexColor();
-    setColor(newColor);
-    localStorage.setItem(colorKey, newColor);
-  };
-
-  const saveSVGLocally = (svgData) => {
+  const saveDataLocally = (svgData) => {
     try {
       // Store the SVG data in localStorage
       localStorage.setItem("bgColor", bgColor); // Save bgColor
@@ -180,11 +174,17 @@ function Artwork({ bgImage, setBgImage }) {
   };
 
   const handleDrawAndStore = () => {
-    console.log(bgString);
+    console.log("getting a call", bgString);
     let svgString = startString + bgString + drawStrokes() + endString;
-    console.log("RATATA", svgString);
-    saveSVGLocally(svgString);
+    saveDataLocally(svgString);
     setBgImage(svgString);
+  };
+
+  const handleColorChange = (colorKey, setColor) => {
+    const newColor = getRandomHexColor(colorKey);
+    console.log(newColor);
+    setColor(newColor);
+    localStorage.setItem(colorKey, newColor);
   };
 
   const handleGridSizeChange = (event, newValue) => {
@@ -198,7 +198,7 @@ function Artwork({ bgImage, setBgImage }) {
       newValue > 2 ? Math.floor(newValue * newValue * 0.5 + newValue) : 2,
       segmentsAmount
     );
-    console.log(newAmountOfStrokes);
+    // console.log(newAmountOfStrokes);
 
     setSegmentAmount(newAmountOfStrokes);
     localStorage.setItem("segmentsAmount", newAmountOfStrokes); // Save segmentsAmount
@@ -288,14 +288,14 @@ function Artwork({ bgImage, setBgImage }) {
 
         <Box sx={{ width: 300, mt: "2rem" }}>
           <Button
-            onClick={() => handleColorChange(setColor1, "col1")}
+            onClick={() => handleColorChange("col1", setColor1)}
             style={{ background: `${color1}`, width: "125px" }}
           >
             Color 1
           </Button>
 
           <Button
-            onClick={() => handleColorChange(setColor2, "col2")}
+            onClick={() => handleColorChange("col2", setColor2)}
             style={{ background: `${color2}`, width: "125px" }}
           >
             Color 2

@@ -36,8 +36,7 @@ export default function BlogItemCard({ blog }) {
               backgroundColor: `${theme.palette.background.transparent}`,
               display: "flex",
               flexDirection: "column",
-              margin: "1rem 0 1rem 0",
-              minHeight: "30rem",
+              minHeight: "25rem",
               border: "1px solid black",
             }}
           >

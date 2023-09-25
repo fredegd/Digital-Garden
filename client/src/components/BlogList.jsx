@@ -20,11 +20,11 @@ const theme = useTheme();
   }, []);
 
   return (
-    <Box sx={{ zIndex: "100", width: "100%"}}>
+    <Box sx={{ zIndex: "100", width: "100%", padding:  "2.5rem"}}>
       <Box>
         <Typography variant="h1">BLOG</Typography>
       </Box>
-      <Grid container spacing={6}>
+      <Grid container spacing={5}>
         {blogs.map((blog) => (
           <Grid item xs={12} sm={6} md={4} key={blog._id}>
             
