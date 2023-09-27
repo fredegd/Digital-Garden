@@ -24,16 +24,38 @@ import CssBaseline from "@mui/material/CssBaseline";
 
 import  {themeManager}  from "./theme";
 import { useDarkMode } from "./context/DarkModeContext.jsx";
+import { get } from "lodash";
+import { color } from "framer-motion";
 
 export default function App() {
   const { dk } = useDarkMode();
   const theme = themeManager(dk);
-  console.log(theme)
+   console.log(theme)
   const [open, setOpen] = useState(false);//a state to control the drawer
 
   const [bgImage, setBgImage] = useState(localStorage.getItem("svgData")?localStorage.getItem("svgData"):null);
 
-  return (
+
+  const getRandomHexColor = (colName) => {
+    console.log("a new color was generated");
+    const hexChars = "0123456789abcdef";
+    let color = "#";
+    for (let i = 0; i < 6; i++) {
+      const randomIndex = Math.floor(Math.random() * hexChars.length);
+      color += hexChars[randomIndex];
+    }
+    localStorage.setItem(colName, color);
+    return color;
+  };
+const [color1, setColor1] = useState(localStorage.getItem("col1")?localStorage.getItem("col1"):getRandomHexColor("col1"));
+const [color2, setColor2] = useState(localStorage.getItem("col2")?localStorage.getItem("col2"):getRandomHexColor("col2"));
+
+useEffect(() => {
+  // console.log("something changed")
+  // console.log(color1, color2)
+}, [color1, color2  ]);
+
+return (
     <>
       <ThemeProvider theme={theme}>
         <CssBaseline>
@@ -43,6 +65,7 @@ export default function App() {
             setBgImage={setBgImage}
             open={open}
             setOpen={setOpen}
+            color1={color1} color2={color2} setColor1={setColor1} setColor2={setColor2}
           />{" "}
           <Kaleidoscope bgImage={bgImage} />
           <Routes>

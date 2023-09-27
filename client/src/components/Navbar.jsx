@@ -1,5 +1,6 @@
-import React from "react";
 import { useState, useEffect } from "react";
+import { useLocation } from "react-router-dom";
+
 import { useDarkMode } from "../context/DarkModeContext";
 import { useTheme } from "@mui/material/styles";
 import AppBar from "@mui/material/AppBar";
@@ -21,12 +22,37 @@ import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
 import { navItems } from "../navItems";
 import { cols } from "../colorSchema";
+import { MicNone } from "@mui/icons-material";
 
 // const drawerWidth = 240;
 
 export default function Navbar({ window, setOpen }) {
   const { dk, toggleDarkMode } = useDarkMode();
   const theme = useTheme();
+
+  const location = useLocation();
+  const [activeMenuItem, setActiveMenuItem] = useState(null);
+  console.log(activeMenuItem);
+  useEffect(() => {
+    // Iterate through the navItems to find the active one
+    for (const item of navItems) {
+      console.log(location.pathname)
+      console.log(location.pathname.startsWith(item.linkTo))
+
+      if (location.pathname === item.linkTo) {
+        setActiveMenuItem(item.id);
+        return; // Exit the loop early when found
+      }
+      if (location.pathname.startsWith(item.linkTo)) {
+
+        setActiveMenuItem(item.id);
+        console.log(item.linkTo)
+        return;
+      }
+    }
+    // If no match is found, set activeMenuItem to null
+    setActiveMenuItem(null);
+  }, [location.pathname]);
 
   // const { window } = props;
   const [mobileOpen, setMobileOpen] = useState(false);
@@ -55,7 +81,10 @@ export default function Navbar({ window, setOpen }) {
         height: "100vh",
       }}
     >
-      <Typography variant="h5" sx={{color: theme.palette.text.highlight, my: 2, maxHeight: "5vh" }} >
+      <Typography
+        variant="h5"
+        sx={{ color: theme.palette.text.highlight, my: 2, maxHeight: "5vh" }}
+      >
         Fred Egidi
       </Typography>
       <Divider />
@@ -80,7 +109,18 @@ export default function Navbar({ window, setOpen }) {
             <Link href={item.linkTo} underline="hover">
               <Button
                 key={item.id}
-                sx={{ color: theme.palette.text.primary, width: "100vw" }}
+                sx={{
+                  color:
+                    activeMenuItem === item.id
+                      ? theme.palette.text.highlightAlt // Active color
+                      : theme.palette.text.primary, // Inactive color
+                  backgroundColor:
+                    activeMenuItem === item.id
+                      ? theme.palette.text.primary
+                      : "transparent",
+
+                  width: "100vw",
+                }}
               >
                 <Typography variant="h4" sx={{ my: 2, maxHeight: "5vh" }}>
                   {item.name}{" "}
@@ -126,7 +166,11 @@ export default function Navbar({ window, setOpen }) {
             component="div"
             color={theme.palette.text.primary}
             fontFamily={"IBM Plex Mono"}
-            sx={{ flexGrow: 1, display: { xs: "none", sm: "block" },color: theme.palette.text.highlight, }}
+            sx={{
+              flexGrow: 1,
+              display: { xs: "none", sm: "block" },
+              color: theme.palette.text.highlight,
+            }}
             textAlign="left"
           >
             Fred Egidi
@@ -135,7 +179,18 @@ export default function Navbar({ window, setOpen }) {
           <Box sx={{ display: { xs: "none", sm: "block" } }}>
             {navItems.map((item) => (
               <Link key={item.id} href={item.linkTo} underline="hover">
-                <Button sx={{ color: theme.palette.text.primary }}>
+                <Button
+                  sx={{
+                    color:
+                      activeMenuItem === item.id
+                        ? theme.palette.text.highlightAlt // Active color
+                        : theme.palette.text.primary, // Inactive color
+                    backgroundColor:
+                      activeMenuItem === item.id
+                        ? theme.palette.text.primary
+                        : "transparent",
+                  }}
+                >
                   {item.name}
                 </Button>
               </Link>

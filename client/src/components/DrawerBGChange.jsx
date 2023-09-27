@@ -5,7 +5,7 @@ import Drawer from "@mui/material/Drawer";
 import Button from "@mui/material/Button";
 import Artwork from "./Artwork";
 
-export default function DrawerBGChange({ bgImage, setBgImage, open, setOpen }) {
+export default function DrawerBGChange({ bgImage, setBgImage, open, setOpen ,color1, color2, setColor1, setColor2}) {
   const [state, setState] = useState(false);
 
   const toggleDrawer = (open) => (event) => {
@@ -45,7 +45,7 @@ export default function DrawerBGChange({ bgImage, setBgImage, open, setOpen }) {
           >
             Close
           </Button>
-          <Artwork bgImage={bgImage} setBgImage={setBgImage} />
+          <Artwork bgImage={bgImage} setBgImage={setBgImage} color1={color1} color2={color2} setColor1={setColor1} setColor2={setColor2} />
         </Box>
       </Drawer>
   );

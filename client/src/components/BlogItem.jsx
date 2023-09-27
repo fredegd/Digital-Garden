@@ -1,5 +1,5 @@
 import { motion, useScroll } from "framer-motion";
-import { useParams } from "react-router-dom";
+import { useParams, Link } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { documentToReactComponents } from "@contentful/rich-text-react-renderer";
 import ReactMarkdown from "react-markdown";
@@ -113,7 +113,7 @@ export default function BlogItem() {
               right: 0,
               height: "1rem",
               transformOrigin: "0%",
-              background: "red",
+              background: theme.palette.text.highlightAlt,
             }}
           />
           {showBackToTop && (
@@ -132,9 +132,30 @@ export default function BlogItem() {
               <KeyboardArrowUp />
             </IconButton>
           )}
+
+
+{/* Back to "/blog" button */}
+<Link to="/blog" style={{ textDecoration: "none" }}>
+            <IconButton
+              sx={{
+                position: "fixed",
+                top: "12rem",
+                left: "2rem",
+                backgroundColor: theme.palette.text.highlightAlt,
+                color: theme.palette.primary.contrastText,
+                "&:hover": {
+                  backgroundColor: theme.palette.text.primary,
+                },
+              }}
+            >
+              {/* You can add an icon or text here */}
+              Back to Blog
+            </IconButton>
+          </Link>
+
           <Box
             sx={{
-              boxShadow: theme.shadows[3],
+              boxShadow: theme.shadows,
               backgroundColor: theme.palette.background.main,
               padding: "2rem 1.5rem 3rem 1.5rem",
             }}

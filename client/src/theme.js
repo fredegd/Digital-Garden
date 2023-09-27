@@ -12,7 +12,8 @@ export const themeManager = (darkMode) => {
     text: {
       primary: "#f1f1f1",
       secondary: "#888888",
-      highlight: "#ffff00",
+      highlight: localStorage.getItem("col1") || "#ff8800", //hex orange color
+      highlightAlt: localStorage.getItem("col2") || "#ffff00", //hex yellow color
     },
     action: {
       active: "#ffcf8c",
@@ -32,7 +33,9 @@ export const themeManager = (darkMode) => {
     text: {
       primary: "#131313",
       secondary: "#888888",
-      highlight: "#ff8800", //hex orange color
+      highlight: localStorage.getItem("col1") || "#ff8800", //hex orange color
+      highlightAlt: localStorage.getItem("col2") || "#ffff00", //hex yellow color
+
     },
     action: {
       active: "#ffcf8c",
@@ -43,15 +46,6 @@ export const themeManager = (darkMode) => {
   };
 
   const theme = createTheme({
-    // breakpoints: {
-    //   values: {
-    //     xs: 0,
-    //     sm: 600, // Adjust these values as needed
-    //     md: 960, // Adjust these values as needed
-    //     lg: 1280, // Adjust these values as needed
-    //     xl: 1920, // Adjust these values as needed
-    //   },
-    // },
     palette: darkMode ? { ...darkPalette } : { ...lightPalette },
 
     typography: {
@@ -110,7 +104,10 @@ export const themeManager = (darkMode) => {
         fontSize: "1rem",
         fontFamily: "IBM Plex Mono, sans-serif",
       },
+      
     },
+    shadows:
+      "0px 0px 10px 10px #ff0000 0.5, 10px 10px 10px  10px rgba(0,0,0,0.14), 0px 0px 10px 10px rgba(0,0,0,0.12)",
   });
 
   return theme;

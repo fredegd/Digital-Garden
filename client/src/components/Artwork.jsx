@@ -24,7 +24,7 @@ const svgHeight = 250;
 const startString = `<svg xmlns="http://www.w3.org/2000/svg" width="${svgWidth}" height="${svgHeight}">`;
 const endString = "</svg>";
 
-function Artwork({ bgImage, setBgImage }) {
+function Artwork({ bgImage, setBgImage, color1, color2, setColor1, setColor2 }) {
   const theme = useTheme();
   const dk = useDarkMode();
 
@@ -52,16 +52,18 @@ function Artwork({ bgImage, setBgImage }) {
     gridSize > 2 ? Math.floor(gridSize * gridSize * 0.5) + gridSize : 2
   );
 
-  const [color1, setColor1] = useState(
-    localStorage.getItem("col1")
-      ? localStorage.getItem("col1")
-      : getRandomHexColor("col1")
-  );
-  const [color2, setColor2] = useState(
-    localStorage.getItem("col2")
-      ? localStorage.getItem("col2")
-      : getRandomHexColor("col2")
-  );
+  // const [color1, setColor1] = useState(
+  //   localStorage.getItem("col1")
+  //     ? localStorage.getItem("col1")
+  //     : getRandomHexColor("col1")
+  // );
+  // const [color2, setColor2] = useState(
+  //   localStorage.getItem("col2")
+  //     ? localStorage.getItem("col2")
+  //     : getRandomHexColor("col2")
+  // );
+
+
 
   const extractStrokesFromSVG = () => {
     const regex = /<line [^>]*\/>/g;
@@ -142,7 +144,7 @@ function Artwork({ bgImage, setBgImage }) {
     );
 
     if (svgDataString) {
-      console.log("done");
+      // console.log("done");
       localStorage.setItem("svgData", svgDataString);
       setBgImage(svgDataString);
     }
@@ -156,7 +158,7 @@ function Artwork({ bgImage, setBgImage }) {
       setBgImage(svgData);
       // console.log("svgData was read from LS", svgData);
     }
-  }, [bgImage]);
+  }, [bgImage, color1, color2]);
 
   const saveDataLocally = (svgData) => {
     try {
@@ -180,10 +182,10 @@ function Artwork({ bgImage, setBgImage }) {
     setBgImage(svgString);
   };
 
-  const handleColorChange = (colorKey, setColor) => {
+  const handleColorChange = (colorKey, setter) => {
     const newColor = getRandomHexColor(colorKey);
     console.log(newColor);
-    setColor(newColor);
+    setter(newColor);
     localStorage.setItem(colorKey, newColor);
   };
 
