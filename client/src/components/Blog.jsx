@@ -1,5 +1,5 @@
 import React from "react";
-import BlogList from "./BlogList";
+import BlogListCF from "./BlogListCF";
 import { Box } from "@mui/material";
 export default function Blog() {
   return (
@@ -15,7 +15,8 @@ export default function Blog() {
 
       }}
     >
-      <BlogList />
+      
+      <BlogListCF />
     </Box>
   );
 }

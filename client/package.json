@@ -17,6 +17,7 @@
     "@use-gesture/react": "^10.3.0",
     "animejs": "^3.2.1",
     "framer-motion": "^10.16.4",
+    "fs": "^0.0.1-security",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-hook-form": "^7.46.1",

@@ -1,7 +1,7 @@
 import React from "react";
-import { useState } from "react";
-import { useDarkMode } from '../context/DarkModeContext';
-
+import { useState, useEffect } from "react";
+import { useDarkMode } from "../context/DarkModeContext";
+import { useTheme } from "@mui/material/styles";
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
 import CssBaseline from "@mui/material/CssBaseline";
@@ -14,20 +14,20 @@ import ListItem from "@mui/material/ListItem";
 
 import MenuIcon from "@mui/icons-material/Menu";
 import WallpaperIcon from "@mui/icons-material/Wallpaper";
-import LightModeIcon from '@mui/icons-material/LightMode';
-import DarkModeIcon from '@mui/icons-material/DarkMode';
+import LightModeIcon from "@mui/icons-material/LightMode";
+import DarkModeIcon from "@mui/icons-material/DarkMode";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
 import { navItems } from "../navItems";
 import { cols } from "../colorSchema";
 
-
 // const drawerWidth = 240;
 
 export default function Navbar({ window, setOpen }) {
-
   const { dk, toggleDarkMode } = useDarkMode();
+  const theme = useTheme();
+
   // const { window } = props;
   const [mobileOpen, setMobileOpen] = useState(false);
 
@@ -44,20 +44,47 @@ export default function Navbar({ window, setOpen }) {
   };
 
   const drawer = (
-    <Box onClick={handleDrawerToggle} sx={{ textAlign: "center" ,  width: {
-      sm: "400px", // 400px wide on screens wider than 600px (md)
-      xs: "100vw", // Fullscreen on small screens
-    },}}>
-      <Typography variant="h6" sx={{ my: 2 }}>
+    <Box
+      onClick={handleDrawerToggle}
+      sx={{
+        textAlign: "center",
+        width: {
+          sm: "400px", // 400px wide on screens wider than 600px (md)
+          xs: "100vw", // Fullscreen on small screens
+        },
+        height: "100vh",
+      }}
+    >
+      <Typography variant="h5" sx={{color: theme.palette.text.highlight, my: 2, maxHeight: "5vh" }} >
         Fred Egidi
       </Typography>
       <Divider />
-      <List>
+      <List
+        sx={{
+          height: "90vh",
+          display: "flex",
+          flexDirection: "column",
+          justifyContent: "space-around",
+        }}
+      >
         {navItems.map((item) => (
-          <ListItem key={item.id} disablePadding>
+          <ListItem
+            key={item.id}
+            disablePadding
+            sx={{
+              display: "flex",
+              flexDirection: "column",
+              justifyContent: "center",
+            }}
+          >
             <Link href={item.linkTo} underline="hover">
-              <Button key={item.id} sx={{ color: "#111111" }}>
-                {item.name}
+              <Button
+                key={item.id}
+                sx={{ color: theme.palette.text.primary, width: "100vw" }}
+              >
+                <Typography variant="h4" sx={{ my: 2, maxHeight: "5vh" }}>
+                  {item.name}{" "}
+                </Typography>
               </Button>
             </Link>
           </ListItem>
@@ -71,16 +98,25 @@ export default function Navbar({ window, setOpen }) {
 
   return (
     <Box sx={{ display: "flex" }}>
-      <CssBaseline />
       <AppBar component="nav">
-        <Toolbar sx={{ backgroundColor: cols.main, display:"flex",flexDirection:"row", justifyContent:"space-between" }}>
-         
+        <Toolbar
+          sx={{
+            backgroundColor: theme.palette.background.main,
+            height: "5rem",
+            display: "flex",
+            flexDirection: "row",
+            justifyContent: "space-between",
+          }}
+        >
           <IconButton
-            color="inherit"
             aria-label="open drawer"
             edge="start"
             onClick={handleDrawerToggle}
-            sx={{ mr: 2, display: { sm: "none" } }}
+            sx={{
+              mr: 2,
+              display: { sm: "none" },
+              color: theme.palette.text.primary,
+            }}
           >
             <MenuIcon />
           </IconButton>
@@ -88,8 +124,10 @@ export default function Navbar({ window, setOpen }) {
           <Typography
             variant="h6"
             component="div"
+            color={theme.palette.text.primary}
             fontFamily={"IBM Plex Mono"}
-            sx={{ flexGrow: 1, display: { xs: "none", sm: "block" } }}
+            sx={{ flexGrow: 1, display: { xs: "none", sm: "block" },color: theme.palette.text.highlight, }}
+            textAlign="left"
           >
             Fred Egidi
           </Typography>
@@ -97,19 +135,26 @@ export default function Navbar({ window, setOpen }) {
           <Box sx={{ display: { xs: "none", sm: "block" } }}>
             {navItems.map((item) => (
               <Link key={item.id} href={item.linkTo} underline="hover">
-                <Button sx={{ color: "#f1f1f1" }}>{item.name}</Button>
+                <Button sx={{ color: theme.palette.text.primary }}>
+                  {item.name}
+                </Button>
               </Link>
             ))}
           </Box>
 
-          <div onClick={handleDrawerBgChange}>
+          <div
+            onClick={handleDrawerBgChange}
+            style={{ color: theme.palette.text.highlight }}
+          >
             <WallpaperIcon />
           </div>
 
-          <div onClick={handleDarkChange}>
-            {dk?<DarkModeIcon />:<LightModeIcon />}
+          <div
+            onClick={handleDarkChange}
+            style={{ color: theme.palette.text.primary }}
+          >
+            {dk ? <DarkModeIcon /> : <LightModeIcon />}
           </div>
-
         </Toolbar>
       </AppBar>
 

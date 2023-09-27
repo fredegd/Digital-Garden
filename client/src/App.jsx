@@ -28,6 +28,7 @@ import { useDarkMode } from "./context/DarkModeContext.jsx";
 export default function App() {
   const { dk } = useDarkMode();
   const theme = themeManager(dk);
+  console.log(theme)
   const [open, setOpen] = useState(false);//a state to control the drawer
 
   const [bgImage, setBgImage] = useState(localStorage.getItem("svgData")?localStorage.getItem("svgData"):null);
