@@ -2,7 +2,7 @@
 
 ![App Screenshot](./client/src/assets/preview.gif)
 
-# Digital Garden
+# blog-portfolio_BE_TEST
 
 Personal Portfolio WebPage / Curriculum
 
@@ -10,7 +10,6 @@ Made using React and NodeJs
 
 ## Table of Contents
 
-- [Demo](#demo)
 - [Features](#features)
 - [Installation](#installation)
 - [Usage](#usage)
@@ -18,12 +17,8 @@ Made using React and NodeJs
 - [Contributing](#contributing)
 - [License](#license)
 
-## Demo
-
-You can see a live demo of this application [here](https://digital-garden-69r6.onrender.com/).
 
 
-Provide an introduction to your project. Explain what it does, its purpose, and any relevant background information. You can also include a screenshot or a GIF to showcase the project.
 
 ## Features
 
